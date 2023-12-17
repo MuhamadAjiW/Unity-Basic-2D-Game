@@ -11,7 +11,6 @@ public class PlayerMovement {
     public PlayerMovement(Player player){
         this.player = player;
         this.jumpCounter = player.jumpCounter;
-        Debug.Log(this.jumpCounter);
     }
 
     private Vector2 getPlayerPosition(){
@@ -24,15 +23,28 @@ public class PlayerMovement {
 
     public void move(){
         float keyPress = Input.GetAxis("Horizontal");
+        
+        Vector2 newPos;
 
-        Vector2 newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce(), 0);
 
+
+        // Debug.Log(player.rigidBody.velocity.x);
+        // if (player.rigidBody.velocity.x > 0 && keyPress < 0){
+        //     Debug.Log("condition 1");
+        //     newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce() * 0.5f, 0);
+        // } else if (player.rigidBody.velocity.x < 0 && keyPress > 0){
+        //     Debug.Log("condition 2");
+        //     newPos =  new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce() * 0.5f, 0);
+        // } else{
+        //     newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce(), 0);
+        // }
+
+        newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce(), 0);
         setPlayerPosition(getPlayerPosition() + newPos);
     }
 
     public void jump(){
         if(Input.GetButtonDown("Jump") && this.jumpCounter > 0 && jumpDelayOver){
-            Debug.Log(this.jumpCounter);
             Vector2 force = new Vector2(0, player.getVerticalForce());
             
             this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
@@ -42,16 +54,22 @@ public class PlayerMovement {
             this.jumpDelayOver = false;
             player.StartCoroutine(delayJump());
         } else if (player.isGrounded && jumpDelayOver){
-            Debug.Log(String.Format("grounded jumpCounter: {0}", this.jumpCounter));
             this.jumpCounter = this.player.jumpCounter;
         }
     }
 
     private IEnumerator delayJump(){
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < Constants.PLAYER_JUMP_DELAY; i++){
             yield return new WaitForFixedUpdate();
         }
         this.jumpDelayOver = true;
-        Debug.Log(String.Format("Jump delay over"));
+    }
+
+    void Update(){
+        if (player.rigidBody.velocity.y < 0){
+            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
+        } else if (player.rigidBody.velocity.y > 0 && !Input.GetButton("Jump")){
+            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
+        }
     }
 }

@@ -444,10 +444,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -520,10 +520,11 @@ MonoBehaviour:
   collider: {fileID: 0}
   sprite: {fileID: 0}
   isGrounded: 0
+  snapShotForce: 5
   walkForce: 5
   sprintForce: 20
-  jumpForce: 5
-  jumpCounter: 1
+  jumpForce: 700
+  jumpCounter: 2
 --- !u!1 &1552046566
 GameObject:
   m_ObjectHideFlags: 0
