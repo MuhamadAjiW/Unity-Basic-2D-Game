@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, MovingEntity
+public class Player : RigidEntity, MovingEntity
 {
     public float walkForce = 5;
     public float sprintForce = 20;
-    public float jumpForce = 5;
+    public float jumpForce = 10000;
+    public int jumpCounter = 2;
 
     private PlayerMovement movement;
     private PlayerStateController stateController;
-    private Rigidbody2D rigidbody2D;
-    private SpriteRenderer spriteRenderer;
 
-    private void Awake(){
+    public Player(bool grounded) : base(grounded){}
+
+    private new void Awake(){
+        base.Awake();
         this.movement = new PlayerMovement(this);
         this.stateController = new PlayerStateController(this);
-        this.rigidbody2D = GetComponent<Rigidbody2D>();
-        this.spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public float getHorizontalForce(){
@@ -37,10 +37,13 @@ public class Player : MonoBehaviour, MovingEntity
         return this.jumpForce;
     }
 
-    void FixedUpdate(){
-        this.stateController.updateState();
-        Util.printPlayerState(this.stateController.GetState());
-        movement.move();
+    void Update(){
         movement.jump();
+    }
+
+    void FixedUpdate(){
+        // Util.printPlayerState(this.stateController.GetState());
+        this.stateController.updateState();
+        movement.move();
     }
 }
