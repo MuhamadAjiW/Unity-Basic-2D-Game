@@ -27,6 +27,7 @@ public class PlayerMovement {
         Vector2 newPos;
 
 
+        // TODO: lock jumping direction
 
         // Debug.Log(player.rigidBody.velocity.x);
         // if (player.rigidBody.velocity.x > 0 && keyPress < 0){

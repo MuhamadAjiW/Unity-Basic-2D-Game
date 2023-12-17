@@ -36,7 +36,10 @@ public class Player : RigidEntity, MovingEntity
                     break;
             }
         } else{
-            targetForce = snapShotForce > Constants.PLAYER_JUMP_MINIMUM_SPEED? snapShotForce : Constants.PLAYER_JUMP_MINIMUM_SPEED;
+            targetForce =
+                     stateController.GetState() != PlayerState.STANCE? 0 :
+                     snapShotForce > Constants.PLAYER_JUMP_MINIMUM_SPEED?
+                     snapShotForce : Constants.PLAYER_JUMP_MINIMUM_SPEED;
         }
 
         snapShotForce = Mathf.Lerp(snapShotForce, targetForce, Time.fixedDeltaTime * 5.0f);
@@ -53,7 +56,7 @@ public class Player : RigidEntity, MovingEntity
     }
 
     void FixedUpdate(){
-        // Util.printPlayerState(this.stateController.GetState());
+        Util.printPlayerState(this.stateController.GetState());
         this.stateController.updateState();
         movement.move();
     }

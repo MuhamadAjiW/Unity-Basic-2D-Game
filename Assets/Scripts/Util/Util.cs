@@ -16,6 +16,12 @@ public static class Util{
             case PlayerState.JUMPING:
                 Debug.Log("[PLAYER_STATE] Player is jumping");
                 break;
+            case PlayerState.FALLING:
+                Debug.Log("[PLAYER_STATE] Player is falling");
+                break;
+            case PlayerState.STANCE:
+                Debug.Log("[PLAYER_STATE] Player is in stance");
+                break;
             default:
                 Debug.Log("[PLAYER_STATE] Invalid State");
                 break;
