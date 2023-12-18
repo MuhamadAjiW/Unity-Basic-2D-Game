@@ -30,7 +30,11 @@ public class PlayerMovement {
         PlayerState playerState = player.getPlayerState();
 
         if(keyPress == 0 || playerState == PlayerState.STANCE){
-            velocity.x = Mathf.Lerp(velocity.x, 0, 0.06f * Constants.PLAYER_MOVEMENT_SMOOTHING);
+            if(player.isGrounded){
+                velocity.x = Mathf.Lerp(velocity.x, 0, 0.08f * Constants.PLAYER_MOVEMENT_SMOOTHING);
+            } else{
+                velocity.x = Mathf.Lerp(velocity.x, 0, 0.02f * Constants.PLAYER_MOVEMENT_SMOOTHING);
+            }
             this.player.rigidBody.velocity = velocity;
         } else{
             force = new Vector2(keyPress * playerHorizontalForce, 0);

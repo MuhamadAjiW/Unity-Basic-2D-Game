@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Player : RigidEntity, MovingEntity
 {
-    public float snapShotForce = 0;
-    private float targetForce = 100;
+    private float currentForce = 0;
     public float walkForce = 100;
     public float walkSpeed = 25;
     public float sprintForce = 200;
@@ -33,25 +32,23 @@ public class Player : RigidEntity, MovingEntity
         if(isGrounded){
             switch (stateController.getState()){
                 case PlayerState.WALKING:
-                    targetForce = this.walkForce;
+                    currentForce = this.walkForce;
                     break;
                 case PlayerState.SPRINTING:
-                    targetForce = this.sprintForce;
+                    currentForce = this.sprintForce;
                     break;
                 default:
-                    targetForce = 0;
+                    currentForce = 0;
                     break;
             }
         } else{
-            targetForce =
+            currentForce =
                      stateController.getState() == PlayerState.STANCE? 0 :
-                     snapShotForce > Constants.PLAYER_JUMP_MINIMUM_SPEED?
-                     snapShotForce : Constants.PLAYER_JUMP_MINIMUM_SPEED;
+                     currentForce > Constants.PLAYER_JUMP_MINIMUM_SPEED?
+                     currentForce : Constants.PLAYER_JUMP_MINIMUM_SPEED;
         }
 
-        snapShotForce = Mathf.Lerp(snapShotForce, targetForce, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-
-        return snapShotForce;
+        return currentForce;
     }
 
     public float getVerticalForce(){
