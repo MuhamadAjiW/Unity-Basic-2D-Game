@@ -23,25 +23,64 @@ public class PlayerMovement {
 
     public void move(){
         float keyPress = Input.GetAxis("Horizontal");
-        
-        Vector2 newPos;
 
+        Vector2 force = new Vector2(0,0);
+        float playerHorizontalForce = player.getHorizontalForce();
+        Vector2 velocity = this.player.rigidBody.velocity;
+        PlayerState playerState = player.getPlayerState();
 
-        // TODO: lock jumping direction
+        if(keyPress == 0 || playerState == PlayerState.STANCE){
+            velocity.x = Mathf.Lerp(velocity.x, 0, 0.06f * Constants.PLAYER_MOVEMENT_SMOOTHING);
+            this.player.rigidBody.velocity = velocity;
+        } else{
+            force = new Vector2(keyPress * playerHorizontalForce, 0);
 
-        // Debug.Log(player.rigidBody.velocity.x);
-        // if (player.rigidBody.velocity.x > 0 && keyPress < 0){
-        //     Debug.Log("condition 1");
-        //     newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce() * 0.5f, 0);
-        // } else if (player.rigidBody.velocity.x < 0 && keyPress > 0){
-        //     Debug.Log("condition 2");
-        //     newPos =  new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce() * 0.5f, 0);
-        // } else{
-        //     newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce(), 0);
-        // }
+            switch (playerState)
+            {
+                case (PlayerState.WALKING):
+                    if(keyPress > 0 && velocity.x > this.player.walkSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, this.player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        this.player.rigidBody.velocity = velocity;
+                        break;
+                    }
+                    else if(keyPress < 0 && velocity.x < (-1) * this.player.walkSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, (-1) * this.player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        this.player.rigidBody.velocity = velocity;
+                        break;
+                    }
+                    this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
+                    break;
+                case (PlayerState.SPRINTING):
+                    if(keyPress > 0 && velocity.x > this.player.sprintSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, this.player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        this.player.rigidBody.velocity = velocity;
+                        break;
+                    }
+                    else if(keyPress < 0 && velocity.x < (-1) * this.player.sprintSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, (-1) * this.player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        this.player.rigidBody.velocity = velocity;
+                        break;
+                    }
+                    this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
+                    break;
+                case (PlayerState.JUMPING):
+                case (PlayerState.FALLING):
+                    if(keyPress > 0 && velocity.x > 0){
+                        break;
+                    }
+                    else if(keyPress < 0 && velocity.x < 0){
+                        break;
+                    }
+                    this.player.rigidBody.AddForce(force/2, ForceMode2D.Impulse);
+                    break;
+            }
+        }
 
-        newPos = new Vector2(keyPress * Time.fixedDeltaTime * player.getHorizontalForce(), 0);
-        setPlayerPosition(getPlayerPosition() + newPos);
+        if (player.rigidBody.velocity.y < 0){
+            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
+        } else if (player.rigidBody.velocity.y > 0 && !Input.GetButton("Jump")){
+            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
+        }
     }
 
     public void jump(){
@@ -64,13 +103,5 @@ public class PlayerMovement {
             yield return new WaitForFixedUpdate();
         }
         this.jumpDelayOver = true;
-    }
-
-    void Update(){
-        if (player.rigidBody.velocity.y < 0){
-            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
-        } else if (player.rigidBody.velocity.y > 0 && !Input.GetButton("Jump")){
-            player.rigidBody.velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
-        }
     }
 }

@@ -10,12 +10,12 @@ public class PlayerStateController{
     }
 
 
-    public PlayerState GetState(){
+    public PlayerState getState(){
         return this.state;
     }
 
     public PlayerState updateState(){
-        if(Input.GetKey(KeyCode.LeftShift)){
+        if(Input.GetKey(KeyCode.LeftControl)){
             this.state = PlayerState.STANCE;
             return PlayerState.STANCE;
         }
