@@ -25,7 +25,7 @@ public class Player : RigidEntity, IMovingEntity
     }
 
     public float GetHorizontalForce(){
-        if(grounded){
+        if(IsGrounded()){
             currentForce = stateController.GetState() switch
             {
                 PlayerState.WALKING => walkForce,

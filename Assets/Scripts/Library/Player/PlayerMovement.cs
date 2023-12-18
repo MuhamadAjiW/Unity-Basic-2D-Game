@@ -19,7 +19,7 @@ public class PlayerMovement {
         float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxis("Horizontal");
 
         if(keyPress == 0){
-            if(player.grounded){
+            if(player.IsGrounded()){
                 velocity.x = Mathf.Lerp(velocity.x, 0, 0.05f * Constants.PLAYER_MOVEMENT_SMOOTHING);
             } else{
                 velocity.x = Mathf.Lerp(velocity.x, 0, 0.02f * Constants.PLAYER_MOVEMENT_SMOOTHING);
@@ -75,7 +75,7 @@ public class PlayerMovement {
 
             jumpDelayOver = false;
             player.StartCoroutine(DelayJump());
-        } else if (player.grounded && jumpDelayOver){
+        } else if (player.IsGrounded() && jumpDelayOver){
             jumpCounter = player.jumpCounter;
         }
     }

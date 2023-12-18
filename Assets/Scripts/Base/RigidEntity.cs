@@ -5,7 +5,7 @@ public class RigidEntity : MonoBehaviour, IRigidEntity{
     new private Collider2D collider;
     private SpriteRenderer sprite;
 
-    public bool grounded = false;
+    private bool grounded = false;
 
     public RigidEntity(bool grounded){
         this.grounded = grounded;

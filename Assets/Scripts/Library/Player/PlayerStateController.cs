@@ -29,11 +29,11 @@ public class PlayerStateController{
             state = PlayerState.WALKING;
             return PlayerState.WALKING;
         }
-        else if(!player.grounded && player.GetRigidbody2D().velocity.y > 0){
+        else if(!player.IsGrounded() && player.GetRigidbody2D().velocity.y > 0){
             state = PlayerState.JUMPING;
             return PlayerState.JUMPING;
         }
-        else if(!player.grounded && player.GetRigidbody2D().velocity.y < 0){
+        else if(!player.IsGrounded() && player.GetRigidbody2D().velocity.y < 0){
             state = PlayerState.FALLING;
             return PlayerState.JUMPING;
         }
