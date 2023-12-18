@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class PlayerDash{
+public class PlayerStance{
     private Player player;
 
-    public PlayerDash(Player player){
+    public PlayerStance(Player player){
         this.player = player;
     }
     

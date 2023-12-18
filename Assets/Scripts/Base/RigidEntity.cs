@@ -1,14 +1,30 @@
 using UnityEngine;
 
-public class RigidEntity : MonoBehaviour{
-    public Rigidbody2D rigidBody;
-    new public Collider2D collider;
-    public SpriteRenderer sprite;
+public class RigidEntity : MonoBehaviour, IRigidEntity{
+    private Rigidbody2D rigidBody;
+    new private Collider2D collider;
+    private SpriteRenderer sprite;
 
-    public bool isGrounded = false;
+    public bool grounded = false;
 
     public RigidEntity(bool grounded){
-        isGrounded = grounded;
+        this.grounded = grounded;
+    }
+
+    public bool isGrounded(){
+        return grounded;
+    }
+
+    public Rigidbody2D GetRigidbody2D(){
+        return rigidBody;
+    }
+
+    public Collider2D GetCollider2D(){
+        return collider;
+    }
+
+    public SpriteRenderer GetSpriteRenderer(){
+        return sprite;
     }
 
     public void Awake(){
@@ -19,14 +35,14 @@ public class RigidEntity : MonoBehaviour{
 
 
     private void OnCollisionEnter2D(Collision2D collision){
-        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && !isGrounded){
-            isGrounded = true;
+        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && !grounded){
+            grounded = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision){
-        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && isGrounded){
-            isGrounded = false;
+        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && grounded){
+            grounded = false;
         }
     }
 }

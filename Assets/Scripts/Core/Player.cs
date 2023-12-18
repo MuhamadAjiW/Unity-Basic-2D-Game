@@ -1,4 +1,4 @@
-public class Player : RigidEntity, MovingEntity
+public class Player : RigidEntity, IMovingEntity
 {
     private float currentForce = 0;
     public float walkForce = 100;
@@ -25,7 +25,7 @@ public class Player : RigidEntity, MovingEntity
     }
 
     public float getHorizontalForce(){
-        if(isGrounded){
+        if(grounded){
             switch (stateController.getState()){
                 case PlayerState.WALKING:
                     currentForce = walkForce;
@@ -49,6 +49,17 @@ public class Player : RigidEntity, MovingEntity
 
     public float getVerticalForce(){
         return jumpForce;
+    }
+
+    public float getMaxSpeed(){
+        switch(getPlayerState()){
+            case PlayerState.WALKING:
+                return walkSpeed;
+            case PlayerState.SPRINTING:
+                return sprintSpeed;
+            default:
+                return 0;
+        }
     }
 
     void Update(){
