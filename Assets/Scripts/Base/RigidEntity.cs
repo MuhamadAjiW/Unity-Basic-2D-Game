@@ -11,7 +11,7 @@ public class RigidEntity : MonoBehaviour, IRigidEntity{
         this.grounded = grounded;
     }
 
-    public bool isGrounded(){
+    public bool IsGrounded(){
         return grounded;
     }
 

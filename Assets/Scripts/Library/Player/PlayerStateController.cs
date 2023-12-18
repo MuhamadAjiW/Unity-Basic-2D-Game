@@ -10,11 +10,11 @@ public class PlayerStateController{
     }
 
 
-    public PlayerState getState(){
+    public PlayerState GetState(){
         return state;
     }
 
-    public PlayerState updateState(){
+    public PlayerState UpdateState(){
         if(Input.GetKey(KeyCode.LeftControl)){
             state = PlayerState.STANCE;
             return PlayerState.STANCE;

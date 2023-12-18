@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public static class Util{
-    public static void printPlayerState(PlayerState state){
+    public static void PrintPlayerState(PlayerState state){
         switch (state)
         {
             case PlayerState.IDLE:

@@ -15,7 +15,7 @@ public class Player : RigidEntity, IMovingEntity
     public Player(bool grounded) : base(grounded){}
 
     public PlayerState getPlayerState(){
-        return stateController.getState();
+        return stateController.GetState();
     }
 
     private new void Awake(){
@@ -24,22 +24,17 @@ public class Player : RigidEntity, IMovingEntity
         stateController = new PlayerStateController(this);
     }
 
-    public float getHorizontalForce(){
+    public float GetHorizontalForce(){
         if(grounded){
-            switch (stateController.getState()){
-                case PlayerState.WALKING:
-                    currentForce = walkForce;
-                    break;
-                case PlayerState.SPRINTING:
-                    currentForce = sprintForce;
-                    break;
-                default:
-                    currentForce = 0;
-                    break;
-            }
+            currentForce = stateController.GetState() switch
+            {
+                PlayerState.WALKING => walkForce,
+                PlayerState.SPRINTING => sprintForce,
+                _ => 0,
+            };
         } else{
             currentForce =
-                     stateController.getState() == PlayerState.STANCE? 0 :
+                     stateController.GetState() == PlayerState.STANCE? 0 :
                      currentForce > Constants.PLAYER_JUMP_MINIMUM_SPEED?
                      currentForce : Constants.PLAYER_JUMP_MINIMUM_SPEED;
         }
@@ -47,28 +42,26 @@ public class Player : RigidEntity, IMovingEntity
         return currentForce;
     }
 
-    public float getVerticalForce(){
+    public float GetVerticalForce(){
         return jumpForce;
     }
 
-    public float getMaxSpeed(){
-        switch(getPlayerState()){
-            case PlayerState.WALKING:
-                return walkSpeed;
-            case PlayerState.SPRINTING:
-                return sprintSpeed;
-            default:
-                return 0;
-        }
+    public float GetMaxSpeed(){
+        return getPlayerState() switch
+        {
+            PlayerState.WALKING => walkSpeed,
+            PlayerState.SPRINTING => sprintSpeed,
+            _ => 0,
+        };
     }
 
     void Update(){
-        movement.jump();
+        movement.Jump();
     }
 
     void FixedUpdate(){
         // Util.printPlayerState(stateController.GetState());
-        stateController.updateState();
-        movement.move();
+        stateController.UpdateState();
+        movement.Move();
     }
 }

@@ -11,9 +11,9 @@ public class PlayerMovement {
         jumpCounter = player.jumpCounter;
     }
 
-    public void move(){
+    public void Move(){
         Vector2 force = new Vector2(0,0);
-        float playerHorizontalForce = player.getHorizontalForce();
+        float playerHorizontalForce = player.GetHorizontalForce();
         Vector2 velocity = player.GetRigidbody2D().velocity;
         PlayerState playerState = player.getPlayerState();
         float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxis("Horizontal");
@@ -28,7 +28,7 @@ public class PlayerMovement {
         } else{
             force = new Vector2(keyPress * playerHorizontalForce, 0);
 
-            float maxSpeed = player.getMaxSpeed();
+            float maxSpeed = player.GetMaxSpeed();
             switch (playerState)
             {
                 case (PlayerState.SPRINTING):
@@ -65,22 +65,22 @@ public class PlayerMovement {
         }
     }
 
-    public void jump(){
+    public void Jump(){
         if(Input.GetButtonDown("Jump") && player.getPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
-            Vector2 force = new Vector2(0, player.getVerticalForce());
+            Vector2 force = new Vector2(0, player.GetVerticalForce());
             
             player.GetRigidbody2D().AddForce(force, ForceMode2D.Impulse);
             
             jumpCounter -= 1;
 
             jumpDelayOver = false;
-            player.StartCoroutine(delayJump());
+            player.StartCoroutine(DelayJump());
         } else if (player.grounded && jumpDelayOver){
             jumpCounter = player.jumpCounter;
         }
     }
 
-    private IEnumerator delayJump(){
+    private IEnumerator DelayJump(){
         for (int i = 0; i < Constants.PLAYER_JUMP_DELAY; i++){
             yield return new WaitForFixedUpdate();
         }
