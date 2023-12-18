@@ -19,19 +19,12 @@ public class PlayerMovement {
         Vector2 dampVelocity = Vector2.zero;
         if(keyPress == 0){
             velocity.x = 0;
-            player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
         } else{
             float maxSpeed = player.GetMaxSpeed();
-            switch (playerState)
-            {
-                case (PlayerState.SPRINTING):
-                case (PlayerState.WALKING):
-                    velocity.x = keyPress * maxSpeed;
-                    player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
-                    break;
-            }
+            velocity.x = keyPress * maxSpeed;
         }
 
+        player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
         if (player.GetRigidbody2D().velocity.y < 0){
             player.GetRigidbody2D().velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
         } else if (player.GetRigidbody2D().velocity.y > 0 && !Input.GetButton("Jump")){
@@ -41,6 +34,9 @@ public class PlayerMovement {
 
     public void Jump(){
         if(Input.GetButtonDown("Jump") && player.GetPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
+            float snapshotSpeed = Mathf.Abs(player.GetRigidbody2D().velocity.x * 1.3f);
+            player.SetSnapshotSpeed(Mathf.Abs(snapshotSpeed > player.walkSpeed?  snapshotSpeed : player.walkSpeed));
+
             Vector2 force = new Vector2(0, player.GetJumpForce());
             
             player.GetRigidbody2D().AddForce(force, ForceMode2D.Impulse);

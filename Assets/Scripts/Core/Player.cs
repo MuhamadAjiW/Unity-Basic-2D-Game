@@ -1,10 +1,11 @@
 public class Player : RigidEntity, IMovingEntity
 {
-    public float walkSpeed = 25;
-    public float sprintSpeed = 50;
+    public float walkSpeed = 10;
+    public float sprintSpeed = 25;
     public float jumpForce = 600;
     public int jumpCounter = 2;
 
+    private float snapshotSpeed = 25;
 
     private PlayerMovement movement;
     private PlayerStance stance;
@@ -32,8 +33,14 @@ public class Player : RigidEntity, IMovingEntity
         {
             PlayerState.WALKING => walkSpeed,
             PlayerState.SPRINTING => sprintSpeed,
+            PlayerState.JUMPING => snapshotSpeed,
+            PlayerState.FALLING => snapshotSpeed,
             _ => 0,
         };
+    }
+
+    public void SetSnapshotSpeed(float speed){
+        snapshotSpeed = speed;
     }
 
     void Update(){
@@ -42,7 +49,7 @@ public class Player : RigidEntity, IMovingEntity
     }
 
     void FixedUpdate(){
-        // Util.printPlayerState(stateController.GetState());
+        Util.PrintPlayerState(stateController.GetState());
         stateController.UpdateState();
         movement.Move();
     }
