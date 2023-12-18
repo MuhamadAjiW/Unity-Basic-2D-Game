@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FollowObject : MonoBehaviour {
     public Transform objectToFollow;
-    public float followingTime = Constants.CAMERA_FOLLOWING_SPEED;
+    public float followingTime = CameraConfig.CAMERA_FOLLOWING_SPEED;
     private Vector3 velocity = Vector3.zero;
     
     void LateUpdate(){

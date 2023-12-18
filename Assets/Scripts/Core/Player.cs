@@ -49,7 +49,7 @@ public class Player : RigidEntity, IMovingEntity
     }
 
     void FixedUpdate(){
-        Util.PrintPlayerState(stateController.GetState());
+        // Util.PrintPlayerState(stateController.GetState());
         stateController.UpdateState();
         movement.Move();
     }

@@ -436,7 +436,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -711,7 +711,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 100
-  m_LinearDrag: 0
+  m_LinearDrag: 0.8
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -721,7 +721,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -782,9 +782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea89bc25a3d498446b22cf415df55e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkForce: 100
   walkSpeed: 10
-  sprintForce: 150
   sprintSpeed: 25
   jumpForce: 600
   jumpCounter: 2

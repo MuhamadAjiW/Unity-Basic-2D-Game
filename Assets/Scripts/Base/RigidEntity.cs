@@ -39,13 +39,13 @@ public class RigidEntity : MonoBehaviour, IRigidEntity{
 
 
     private void OnCollisionEnter2D(Collision2D collision){
-        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && !grounded){
+        if (collision.gameObject.CompareTag(EnvironmentConfig.GROUND_TAG) && !grounded){
             grounded = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision){
-        if (collision.gameObject.CompareTag(Constants.GROUND_TAG) && grounded){
+        if (collision.gameObject.CompareTag(EnvironmentConfig.GROUND_TAG) && grounded){
             grounded = false;
         }
     }

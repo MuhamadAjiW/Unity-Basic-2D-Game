@@ -24,11 +24,11 @@ public class PlayerMovement {
             velocity.x = keyPress * maxSpeed;
         }
 
-        player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
+        player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, PlayerConfig.PLAYER_MOVEMENT_SMOOTHING);
         if (player.GetRigidbody2D().velocity.y < 0){
-            player.GetRigidbody2D().velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
+            player.GetRigidbody2D().velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.PLAYER_FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
         } else if (player.GetRigidbody2D().velocity.y > 0 && !Input.GetButton("Jump")){
-            player.GetRigidbody2D().velocity += Vector2.up * Physics2D.gravity.y * (Constants.PLAYER_JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
+            player.GetRigidbody2D().velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.PLAYER_JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
         }
     }
 
@@ -51,7 +51,7 @@ public class PlayerMovement {
     }
 
     private IEnumerator DelayJump(){
-        for (int i = 0; i < Constants.PLAYER_JUMP_DELAY; i++){
+        for (int i = 0; i < PlayerConfig.PLAYER_JUMP_DELAY; i++){
             yield return new WaitForFixedUpdate();
         }
         jumpDelayOver = true;

@@ -1,25 +1,42 @@
+using System;
 using UnityEngine;
 
 public class PlayerStance{
     private Player player;
-    public float dashModifier = 10;
+    public float dashRange = 10;
 
     public PlayerStance(Player player){
         this.player = player;
     }
     
+    private float DetectDash(Vector2 direction){
+        RaycastHit2D hit = Physics2D.Raycast(player.GetPosition(), direction, dashRange);
+        Debug.DrawRay(player.GetPosition(), direction * dashRange, Color.red);
+
+        if (hit.collider != null){
+            float distanceToObject = hit.distance;
+            Debug.Log("Blocking object detected at a distance of: " + distanceToObject + " units.");
+            return distanceToObject - 0.1f;
+        }
+        else {
+            Debug.Log("No object detected.");
+            return dashRange;
+        }
+    }
+
 
     private void Dash(){
-        Vector2 newPos;
-        if(Input.GetKey(KeyCode.UpArrow))           newPos = new Vector2(0, dashModifier);
-        else if(Input.GetKey(KeyCode.RightArrow))   newPos = new Vector2(dashModifier, 0);
-        else if(Input.GetKey(KeyCode.DownArrow))    newPos = new Vector2(0, (-1) * dashModifier);
-        else if(Input.GetKey(KeyCode.LeftArrow))    newPos = new Vector2((-1) * dashModifier, 0);
+        Vector2 dashVector;
+        if(Input.GetKey(KeyCode.UpArrow))           dashVector = Vector2.up;
+        else if(Input.GetKey(KeyCode.RightArrow))   dashVector = Vector2.right;
+        else if(Input.GetKey(KeyCode.DownArrow))    dashVector = Vector2.down;
+        else if(Input.GetKey(KeyCode.LeftArrow))    dashVector = Vector2.left;
         else                                        return;
 
+        float dashDistance = DetectDash(dashVector);
         if(Input.GetKeyDown(KeyCode.LeftShift)){
             Debug.Log("Dashed");
-            player.transform.position = player.GetPosition() + newPos;
+            player.transform.position = player.GetPosition() + dashVector * dashDistance;
         }
 
     }
