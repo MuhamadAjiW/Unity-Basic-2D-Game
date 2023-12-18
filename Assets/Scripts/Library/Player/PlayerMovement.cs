@@ -8,7 +8,7 @@ public class PlayerMovement {
     
     public PlayerMovement(Player player){
         this.player = player;
-        jumpCounter = player.jumpCounter;
+        jumpCounter = player.GetJumpLimit();
     }
 
     public void Move(){
@@ -35,7 +35,7 @@ public class PlayerMovement {
     public void Jump(){
         if(Input.GetButtonDown("Jump") && player.GetPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
             float snapshotSpeed = Mathf.Abs(player.GetRigidbody2D().velocity.x * 1.3f);
-            player.SetSnapshotSpeed(Mathf.Abs(snapshotSpeed > player.walkSpeed?  snapshotSpeed : player.walkSpeed));
+            player.SetSnapshotSpeed(Mathf.Abs(snapshotSpeed > PlayerConfig.PLAYER_JUMP_MINIMUM_SPEED?  snapshotSpeed : PlayerConfig.PLAYER_JUMP_MINIMUM_SPEED));
 
             Vector2 force = new Vector2(0, player.GetJumpForce());
             
@@ -46,7 +46,7 @@ public class PlayerMovement {
             jumpDelayOver = false;
             player.StartCoroutine(DelayJump());
         } else if (player.IsGrounded() && jumpDelayOver){
-            jumpCounter = player.jumpCounter;
+            jumpCounter = player.GetJumpLimit();
         }
     }
 
