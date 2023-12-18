@@ -11,33 +11,33 @@ public class PlayerStateController{
 
 
     public PlayerState getState(){
-        return this.state;
+        return state;
     }
 
     public PlayerState updateState(){
         if(Input.GetKey(KeyCode.LeftControl)){
-            this.state = PlayerState.STANCE;
+            state = PlayerState.STANCE;
             return PlayerState.STANCE;
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift)){
-            this.state = PlayerState.SPRINTING;
+            state = PlayerState.SPRINTING;
             return PlayerState.SPRINTING;
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0){
-            this.state = PlayerState.WALKING;
+            state = PlayerState.WALKING;
             return PlayerState.WALKING;
         }
         else if(!player.isGrounded && player.rigidBody.velocity.y > 0){
-            this.state = PlayerState.JUMPING;
+            state = PlayerState.JUMPING;
             return PlayerState.JUMPING;
         }
         else if(!player.isGrounded && player.rigidBody.velocity.y < 0){
-            this.state = PlayerState.FALLING;
+            state = PlayerState.FALLING;
             return PlayerState.JUMPING;
         }
-        this.state = PlayerState.IDLE;
+        state = PlayerState.IDLE;
         return PlayerState.IDLE;
     }
 }

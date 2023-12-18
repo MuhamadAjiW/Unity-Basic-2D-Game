@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement {
@@ -10,7 +8,7 @@ public class PlayerMovement {
     
     public PlayerMovement(Player player){
         this.player = player;
-        this.jumpCounter = player.jumpCounter;
+        jumpCounter = player.jumpCounter;
     }
 
     private Vector2 getPlayerPosition(){
@@ -22,50 +20,49 @@ public class PlayerMovement {
     }
 
     public void move(){
-        float keyPress = Input.GetAxis("Horizontal");
-
         Vector2 force = new Vector2(0,0);
         float playerHorizontalForce = player.getHorizontalForce();
-        Vector2 velocity = this.player.rigidBody.velocity;
+        Vector2 velocity = player.rigidBody.velocity;
         PlayerState playerState = player.getPlayerState();
+        float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxis("Horizontal");
 
-        if(keyPress == 0 || playerState == PlayerState.STANCE){
+        if(keyPress == 0){
             if(player.isGrounded){
                 velocity.x = Mathf.Lerp(velocity.x, 0, 0.05f * Constants.PLAYER_MOVEMENT_SMOOTHING);
             } else{
                 velocity.x = Mathf.Lerp(velocity.x, 0, 0.02f * Constants.PLAYER_MOVEMENT_SMOOTHING);
             }
-            this.player.rigidBody.velocity = velocity;
+            player.rigidBody.velocity = velocity;
         } else{
             force = new Vector2(keyPress * playerHorizontalForce, 0);
 
             switch (playerState)
             {
                 case (PlayerState.WALKING):
-                    if(keyPress > 0 && velocity.x > this.player.walkSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, this.player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        this.player.rigidBody.velocity = velocity;
+                    if(keyPress > 0 && velocity.x > player.walkSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        player.rigidBody.velocity = velocity;
                         break;
                     }
-                    else if(keyPress < 0 && velocity.x < (-1) * this.player.walkSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, (-1) * this.player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        this.player.rigidBody.velocity = velocity;
+                    else if(keyPress < 0 && velocity.x < (-1) * player.walkSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, (-1) * player.walkSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        player.rigidBody.velocity = velocity;
                         break;
                     }
-                    this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
+                    player.rigidBody.AddForce(force, ForceMode2D.Impulse);
                     break;
                 case (PlayerState.SPRINTING):
-                    if(keyPress > 0 && velocity.x > this.player.sprintSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, this.player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        this.player.rigidBody.velocity = velocity;
+                    if(keyPress > 0 && velocity.x > player.sprintSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        player.rigidBody.velocity = velocity;
                         break;
                     }
-                    else if(keyPress < 0 && velocity.x < (-1) * this.player.sprintSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, (-1) * this.player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        this.player.rigidBody.velocity = velocity;
+                    else if(keyPress < 0 && velocity.x < (-1) * player.sprintSpeed){
+                        velocity.x = Mathf.Lerp(velocity.x, (-1) * player.sprintSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                        player.rigidBody.velocity = velocity;
                         break;
                     }
-                    this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
+                    player.rigidBody.AddForce(force, ForceMode2D.Impulse);
                     break;
                 case (PlayerState.JUMPING):
                 case (PlayerState.FALLING):
@@ -75,7 +72,7 @@ public class PlayerMovement {
                     else if(keyPress < 0 && velocity.x < 0){
                         break;
                     }
-                    this.player.rigidBody.AddForce(force/2, ForceMode2D.Impulse);
+                    player.rigidBody.AddForce(force, ForceMode2D.Impulse);
                     break;
             }
         }
@@ -88,17 +85,17 @@ public class PlayerMovement {
     }
 
     public void jump(){
-        if(Input.GetButtonDown("Jump") && this.jumpCounter > 0 && jumpDelayOver){
+        if(Input.GetButtonDown("Jump") && player.getPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
             Vector2 force = new Vector2(0, player.getVerticalForce());
             
-            this.player.rigidBody.AddForce(force, ForceMode2D.Impulse);
+            player.rigidBody.AddForce(force, ForceMode2D.Impulse);
             
-            this.jumpCounter -= 1;
+            jumpCounter -= 1;
 
-            this.jumpDelayOver = false;
+            jumpDelayOver = false;
             player.StartCoroutine(delayJump());
         } else if (player.isGrounded && jumpDelayOver){
-            this.jumpCounter = this.player.jumpCounter;
+            jumpCounter = player.jumpCounter;
         }
     }
 
@@ -106,6 +103,6 @@ public class PlayerMovement {
         for (int i = 0; i < Constants.PLAYER_JUMP_DELAY; i++){
             yield return new WaitForFixedUpdate();
         }
-        this.jumpDelayOver = true;
+        jumpDelayOver = true;
     }
 }

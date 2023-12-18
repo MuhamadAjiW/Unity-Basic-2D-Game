@@ -8,13 +8,13 @@ public class RigidEntity : MonoBehaviour{
     public bool isGrounded = false;
 
     public RigidEntity(bool grounded){
-        this.isGrounded = grounded;
+        isGrounded = grounded;
     }
 
     public void Awake(){
-        this.rigidBody = GetComponent<Rigidbody2D>();
-        this.sprite = GetComponent<SpriteRenderer>();
-        this.collider = GetComponent<Collider2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        collider = GetComponent<Collider2D>();
     }
 
 

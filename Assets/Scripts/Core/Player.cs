@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Player : RigidEntity, MovingEntity
 {
     private float currentForce = 0;
@@ -19,23 +15,23 @@ public class Player : RigidEntity, MovingEntity
     public Player(bool grounded) : base(grounded){}
 
     public PlayerState getPlayerState(){
-        return this.stateController.getState();
+        return stateController.getState();
     }
 
     private new void Awake(){
         base.Awake();
-        this.movement = new PlayerMovement(this);
-        this.stateController = new PlayerStateController(this);
+        movement = new PlayerMovement(this);
+        stateController = new PlayerStateController(this);
     }
 
     public float getHorizontalForce(){
         if(isGrounded){
             switch (stateController.getState()){
                 case PlayerState.WALKING:
-                    currentForce = this.walkForce;
+                    currentForce = walkForce;
                     break;
                 case PlayerState.SPRINTING:
-                    currentForce = this.sprintForce;
+                    currentForce = sprintForce;
                     break;
                 default:
                     currentForce = 0;
@@ -52,7 +48,7 @@ public class Player : RigidEntity, MovingEntity
     }
 
     public float getVerticalForce(){
-        return this.jumpForce;
+        return jumpForce;
     }
 
     void Update(){
@@ -60,8 +56,8 @@ public class Player : RigidEntity, MovingEntity
     }
 
     void FixedUpdate(){
-        // Util.printPlayerState(this.stateController.GetState());
-        this.stateController.updateState();
+        // Util.printPlayerState(stateController.GetState());
+        stateController.updateState();
         movement.move();
     }
 }
