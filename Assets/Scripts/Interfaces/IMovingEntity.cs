@@ -1,5 +1,4 @@
 public interface IMovingEntity{
-    public float GetHorizontalForce();
-    public float GetVerticalForce();
+    public float GetJumpForce();
     public float GetMaxSpeed();
 }

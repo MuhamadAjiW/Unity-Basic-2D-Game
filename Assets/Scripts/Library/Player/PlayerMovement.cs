@@ -12,48 +12,22 @@ public class PlayerMovement {
     }
 
     public void Move(){
-        Vector2 force = new Vector2(0,0);
-        float playerHorizontalForce = player.GetHorizontalForce();
-        Vector2 velocity = player.GetRigidbody2D().velocity;
-        PlayerState playerState = player.getPlayerState();
-        float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxis("Horizontal");
+        PlayerState playerState = player.GetPlayerState();
+        float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxisRaw("Horizontal");
+        Vector2 velocity = new(player.GetRigidbody2D().velocity.x, player.GetRigidbody2D().velocity.y);
 
+        Vector2 dampVelocity = Vector2.zero;
         if(keyPress == 0){
-            if(player.IsGrounded()){
-                velocity.x = Mathf.Lerp(velocity.x, 0, 0.05f * Constants.PLAYER_MOVEMENT_SMOOTHING);
-            } else{
-                velocity.x = Mathf.Lerp(velocity.x, 0, 0.02f * Constants.PLAYER_MOVEMENT_SMOOTHING);
-            }
-            player.GetRigidbody2D().velocity = velocity;
+            velocity.x = 0;
+            player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
         } else{
-            force = new Vector2(keyPress * playerHorizontalForce, 0);
-
             float maxSpeed = player.GetMaxSpeed();
             switch (playerState)
             {
                 case (PlayerState.SPRINTING):
                 case (PlayerState.WALKING):
-                    if(keyPress > 0 && velocity.x > maxSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, maxSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        player.GetRigidbody2D().velocity = velocity;
-                        break;
-                    }
-                    else if(keyPress < 0 && velocity.x < (-1) * maxSpeed){
-                        velocity.x = Mathf.Lerp(velocity.x, (-1) * maxSpeed, Time.fixedDeltaTime * Constants.PLAYER_MOVEMENT_SMOOTHING);
-                        player.GetRigidbody2D().velocity = velocity;
-                        break;
-                    }
-                    player.GetRigidbody2D().AddForce(force, ForceMode2D.Impulse);
-                    break;
-                case (PlayerState.JUMPING):
-                case (PlayerState.FALLING):
-                    if(keyPress > 0 && velocity.x > maxSpeed){
-                        break;
-                    }
-                    else if(keyPress < 0 && velocity.x < maxSpeed){
-                        break;
-                    }
-                    player.GetRigidbody2D().AddForce(force, ForceMode2D.Impulse);
+                    velocity.x = keyPress * maxSpeed;
+                    player.GetRigidbody2D().velocity = Vector2.SmoothDamp(player.GetRigidbody2D().velocity, velocity, ref dampVelocity, Constants.PLAYER_MOVEMENT_SMOOTHING);
                     break;
             }
         }
@@ -66,8 +40,8 @@ public class PlayerMovement {
     }
 
     public void Jump(){
-        if(Input.GetButtonDown("Jump") && player.getPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
-            Vector2 force = new Vector2(0, player.GetVerticalForce());
+        if(Input.GetButtonDown("Jump") && player.GetPlayerState() != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
+            Vector2 force = new Vector2(0, player.GetJumpForce());
             
             player.GetRigidbody2D().AddForce(force, ForceMode2D.Impulse);
             

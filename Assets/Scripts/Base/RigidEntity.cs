@@ -26,6 +26,10 @@ public class RigidEntity : MonoBehaviour, IRigidEntity{
     public SpriteRenderer GetSpriteRenderer(){
         return sprite;
     }
+    
+    public Vector2 GetPosition(){
+        return transform.position;
+    }
 
     public void Awake(){
         rigidBody = GetComponent<Rigidbody2D>();
