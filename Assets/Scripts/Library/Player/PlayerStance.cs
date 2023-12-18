@@ -4,13 +4,15 @@ using UnityEngine;
 public class PlayerStance{
     private Player player;
     public float dashRange = 10;
+    private LayerMask ignored;
 
-    public PlayerStance(Player player){
+    public PlayerStance(Player player, LayerMask ignored){
         this.player = player;
+        this.ignored = ignored;
     }
     
     private float DetectDash(Vector2 direction){
-        RaycastHit2D hit = Physics2D.Raycast(player.GetPosition(), direction, dashRange);
+        RaycastHit2D hit = Physics2D.Raycast(player.GetPosition(), direction, dashRange, ~ignored);
         Debug.DrawRay(player.GetPosition(), direction * dashRange, Color.red);
 
         if (hit.collider != null){

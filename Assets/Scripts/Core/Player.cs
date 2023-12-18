@@ -1,9 +1,12 @@
+using UnityEngine;
+
 public class Player : RigidEntity, IMovingEntity
 {
     public float walkSpeed = 10;
     public float sprintSpeed = 25;
     public float jumpForce = 600;
     public int jumpCounter = 2;
+    [SerializeField] private LayerMask ignoreWhileDashing;
 
     private float snapshotSpeed = 25;
 
@@ -21,7 +24,7 @@ public class Player : RigidEntity, IMovingEntity
         base.Awake();
         movement = new PlayerMovement(this);
         stateController = new PlayerStateController(this);
-        stance = new PlayerStance(this);
+        stance = new PlayerStance(this, ignoreWhileDashing);
     }
 
     public float GetJumpForce(){
@@ -53,4 +56,5 @@ public class Player : RigidEntity, IMovingEntity
         stateController.UpdateState();
         movement.Move();
     }
+
 }
