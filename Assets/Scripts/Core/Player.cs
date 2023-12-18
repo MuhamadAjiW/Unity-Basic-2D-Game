@@ -7,7 +7,7 @@ public class Player : RigidEntity, MovingEntity
     private float currentForce = 0;
     public float walkForce = 100;
     public float walkSpeed = 25;
-    public float sprintForce = 200;
+    public float sprintForce = 150;
     public float sprintSpeed = 50;
     public float jumpForce = 600;
     public int jumpCounter = 2;

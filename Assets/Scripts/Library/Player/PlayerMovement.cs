@@ -31,7 +31,7 @@ public class PlayerMovement {
 
         if(keyPress == 0 || playerState == PlayerState.STANCE){
             if(player.isGrounded){
-                velocity.x = Mathf.Lerp(velocity.x, 0, 0.08f * Constants.PLAYER_MOVEMENT_SMOOTHING);
+                velocity.x = Mathf.Lerp(velocity.x, 0, 0.05f * Constants.PLAYER_MOVEMENT_SMOOTHING);
             } else{
                 velocity.x = Mathf.Lerp(velocity.x, 0, 0.02f * Constants.PLAYER_MOVEMENT_SMOOTHING);
             }
