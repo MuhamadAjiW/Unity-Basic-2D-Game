@@ -66,19 +66,21 @@ public class Player : RigidObject, IMovingEntity, IDamageableEntity{
         }
     }
 
-    public float GetJumpForce(){
-        return jumpForce;
+    public float JumpForce{
+        get { return jumpForce; }
     }
 
-    public float GetMaxSpeed(){
-        return State switch
-        {
-            PlayerState.WALKING => walkSpeed,
-            PlayerState.SPRINTING => sprintSpeed,
-            PlayerState.JUMPING => snapshotSpeed,
-            PlayerState.FALLING => snapshotSpeed,
-            _ => 0,
-        };
+    public float MaxSpeed{
+        get {
+            return State switch
+            {
+                PlayerState.WALKING => walkSpeed,
+                PlayerState.SPRINTING => sprintSpeed,
+                PlayerState.JUMPING => snapshotSpeed,
+                PlayerState.FALLING => snapshotSpeed,
+                _ => 0,
+            };
+        }
     }
 
     public float InflictDamage(float damage){

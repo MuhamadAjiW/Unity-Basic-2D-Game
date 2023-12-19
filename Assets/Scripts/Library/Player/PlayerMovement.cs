@@ -19,7 +19,7 @@ public class PlayerMovement {
         if(keyPress == 0){
             velocity.x = 0;
         } else{
-            float maxSpeed = player.GetMaxSpeed();
+            float maxSpeed = player.MaxSpeed;
             velocity.x = keyPress * maxSpeed;
         }
 
@@ -36,7 +36,7 @@ public class PlayerMovement {
             float snapshotSpeed = Mathf.Abs(player.Rigidbody.velocity.x * 1.3f);
             player.SnapshotSpeed = Mathf.Abs(snapshotSpeed > PlayerConfig.PLAYER_JUMP_MINIMUM_SPEED?  snapshotSpeed : PlayerConfig.PLAYER_JUMP_MINIMUM_SPEED);
 
-            Vector2 force = new Vector2(0, player.GetJumpForce());
+            Vector2 force = new Vector2(0, player.JumpForce);
             
             player.Rigidbody.AddForce(force, ForceMode2D.Impulse);
             
