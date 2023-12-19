@@ -1,9 +1,11 @@
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
-    static public GameController instance;
+    public static GameController instance;
+    public static CameraController mainCamera;
 
     private void Awake(){
         if(instance == null) instance = this;
+        mainCamera = new CameraController(this.GetComponentInChildren<Camera>());
     }
 }
