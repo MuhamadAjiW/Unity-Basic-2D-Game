@@ -11,8 +11,8 @@ public class PlayerStance{
     }
     
     private float DetectDash(Vector2 direction){
-        RaycastHit2D hit = Physics2D.Raycast(player.GetPosition(), direction, dashRange, ~ignored);
-        Debug.DrawRay(player.GetPosition(), direction * dashRange, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(player.Position, direction, dashRange, ~ignored);
+        Debug.DrawRay(player.Position, direction * dashRange, Color.red);
 
         if (hit.collider != null){
             float distanceToObject = hit.distance;
@@ -49,13 +49,13 @@ public class PlayerStance{
                 Debug.LogError("Sprite not found.");
             }
 
-            player.transform.position = player.GetPosition() + dashVector * dashDistance;
+            player.transform.position = player.Position + dashVector * dashDistance;
         }
 
     }
 
     public void Execute(){
-        if(player.GetPlayerState() != PlayerState.STANCE) return;
+        if(player.State != PlayerState.STANCE) return;
         Dash();
     }
 }

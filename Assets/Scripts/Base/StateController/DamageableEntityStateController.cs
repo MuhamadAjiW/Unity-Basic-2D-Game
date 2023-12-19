@@ -13,8 +13,8 @@ public abstract class DamageableEntityStateController<T> : EntityStateController
         entity.OnDeath += OnDeath;
     }
 
-    public bool IsDamaged(){
-        return damaged;
+    public bool Damaged{
+        get { return damaged; }
     }
 
     public void insertOnDamageDelayOver(Action action ){

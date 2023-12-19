@@ -22,11 +22,11 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
             state = PlayerState.STANCE;
             return PlayerState.STANCE;
         }
-        else if(!player.IsGrounded && player.GetRigidbody2D().velocity.y > 0){
+        else if(!player.Grounded && player.Rigidbody.velocity.y > 0){
             state = PlayerState.JUMPING;
             return PlayerState.JUMPING;
         }
-        else if(!player.IsGrounded && player.GetRigidbody2D().velocity.y < 0){
+        else if(!player.Grounded && player.Rigidbody.velocity.y < 0){
             state = PlayerState.FALLING;
             return PlayerState.JUMPING;
         }
@@ -47,7 +47,7 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
     }
 
     private IEnumerator DamagedDelay(){
-        if(!player.IsDead()){
+        if(!player.Dead){
             yield return new WaitForSeconds(PlayerConfig.PLAYER_DAMAGED_STATE_DURATION);
             damaged = false;
             invokeDamageDelayOver();

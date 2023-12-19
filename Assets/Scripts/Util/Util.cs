@@ -5,7 +5,7 @@ public static class Util{
         string state = "UNKNOWN";
         string direction = "UNKNOWN";
 
-        switch(controller.GetHeadingDirection()){
+        switch(controller.Heading){
             case HeadingDirection.RIGHT:
                 direction = "right";
                 break;
@@ -14,7 +14,7 @@ public static class Util{
                 break;
         }
 
-        switch (controller.GetState()){
+        switch (controller.State){
             case PlayerState.IDLE:
                 state = "idle";
                 break;

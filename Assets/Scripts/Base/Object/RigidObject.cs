@@ -7,37 +7,20 @@ public class RigidObject : MonoBehaviour, IRigidEntity{
 
     private bool grounded = false;
 
-    public bool IsGrounded{
+    public bool Grounded{
         get { return grounded;}
-        set { grounded = value; }
     }
     public Rigidbody2D Rigidbody {
         get { return rigidBody; }
-        set { rigidBody = value; }
     }
     public Collider2D Collider {
         get { return collider; }
-        set { collider = value; }
     }
     public SpriteRenderer SpriteRenderer {
         get { return sprite; }
-        set { sprite = value; }
     }
-
-    public Rigidbody2D GetRigidbody2D(){
-        return rigidBody;
-    }
-
-    public Collider2D GetCollider2D(){
-        return collider;
-    }
-
-    public SpriteRenderer GetSpriteRenderer(){
-        return sprite;
-    }
-    
-    public Vector2 GetPosition(){
-        return transform.position;
+    public Vector2 Position{
+        get { return transform.position; }
     }
 
     public void Awake(){
@@ -57,5 +40,9 @@ public class RigidObject : MonoBehaviour, IRigidEntity{
         if (collision.gameObject.CompareTag(EnvironmentConfig.GROUND_TAG) && grounded){
             grounded = false;
         }
+    }
+
+    protected void refresh(){
+        Rigidbody.AddForce(Vector2.zero);
     }
 }
