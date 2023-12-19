@@ -12,7 +12,7 @@ public class PlayerMovement {
     }
 
     public void Move(){
-        PlayerState playerState = player.GetPlayerState();
+        int playerState = player.GetPlayerState();
         float keyPress = playerState == PlayerState.STANCE? 0 : Input.GetAxisRaw("Horizontal");
         Vector2 velocity = new(player.GetRigidbody2D().velocity.x, player.GetRigidbody2D().velocity.y);
 
@@ -45,7 +45,7 @@ public class PlayerMovement {
 
             jumpDelayOver = false;
             player.StartCoroutine(DelayJump());
-        } else if (player.IsGrounded() && jumpDelayOver){
+        } else if (player.IsGrounded && jumpDelayOver){
             jumpCounter = player.GetJumpLimit();
         }
     }

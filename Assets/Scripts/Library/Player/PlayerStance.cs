@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerStance{
@@ -17,11 +16,11 @@ public class PlayerStance{
 
         if (hit.collider != null){
             float distanceToObject = hit.distance;
-            Debug.Log("Blocking object detected at a distance of: " + distanceToObject + " units.");
+            // Debug.Log("Blocking object detected at a distance of: " + distanceToObject + " units.");
             return distanceToObject - 0.1f;
         }
         else {
-            Debug.Log("No object detected.");
+            // Debug.Log("No object detected.");
             return dashRange;
         }
     }
@@ -37,7 +36,19 @@ public class PlayerStance{
 
         float dashDistance = DetectDash(dashVector);
         if(Input.GetKeyDown(KeyCode.LeftShift)){
-            Debug.Log("Dashed");
+            // Debug.Log("Dashed");
+
+            GameObject gameObject = new GameObject();
+            gameObject.name = "gameObject";
+            SpriteRenderer spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+            Sprite tileBlankSprite = Resources.Load<Sprite>("Graphics/Misc/TileBlank");
+
+            if (tileBlankSprite != null) {
+                spriteRenderer.sprite = tileBlankSprite;
+            } else {
+                Debug.LogError("Sprite not found.");
+            }
+
             player.transform.position = player.GetPosition() + dashVector * dashDistance;
         }
 

@@ -1,18 +1,27 @@
 using UnityEngine;
 
-public class RigidEntity : MonoBehaviour, IRigidEntity{
+public class RigidObject : MonoBehaviour, IRigidEntity{
     private Rigidbody2D rigidBody;
     new private Collider2D collider;
     private SpriteRenderer sprite;
 
     private bool grounded = false;
 
-    public RigidEntity(bool grounded){
-        this.grounded = grounded;
+    public bool IsGrounded{
+        get { return grounded;}
+        set { grounded = value; }
     }
-
-    public bool IsGrounded(){
-        return grounded;
+    public Rigidbody2D Rigidbody {
+        get { return rigidBody; }
+        set { rigidBody = value; }
+    }
+    public Collider2D Collider {
+        get { return collider; }
+        set { collider = value; }
+    }
+    public SpriteRenderer SpriteRenderer {
+        get { return sprite; }
+        set { sprite = value; }
     }
 
     public Rigidbody2D GetRigidbody2D(){

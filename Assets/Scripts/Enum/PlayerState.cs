@@ -1,8 +1,3 @@
-public enum PlayerState{
-    IDLE,
-    WALKING,
-    JUMPING,
-    FALLING,
-    SPRINTING,
-    STANCE
+public class PlayerState : EntityState {
+    public const int STANCE = 6;
 }
