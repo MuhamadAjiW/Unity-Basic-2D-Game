@@ -39,7 +39,9 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
     }
 
     private void Death(){
+        GameController.mainCamera.ResetCameraBehaviour();
         Debug.Log("Player is dead");
+        GameObject.Destroy(this);
     }
 
     private void DamageCleared(){

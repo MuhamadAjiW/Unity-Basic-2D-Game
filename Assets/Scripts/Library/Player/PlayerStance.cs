@@ -81,7 +81,7 @@ public class PlayerStance{
                     return;
             }
 
-            GameObject dashTrail = ObjectManager.Generate(
+            GameObject dashTrail = ObjectController.Generate(
                 PrefabsPath.PREFAB_PLAYER_DASH,
                 position: trailPosition,
                 rotation: trailRotation,
@@ -89,7 +89,7 @@ public class PlayerStance{
                 sortingOrder: -1000
             );
             
-            ObjectManager.Destroy(dashTrail, PlayerConfig.PLAYER_DASH_TRAIL_DURATION);
+            ObjectController.Destroy(dashTrail, PlayerConfig.PLAYER_DASH_TRAIL_DURATION);
 
             player.transform.position = player.Position + dashVector * dashDistance;
         }
