@@ -12,12 +12,7 @@ public abstract class EntityStateController{
         this.entity = entity;
     }
 
-    public int State{
-        get { return state; }
-    }
-
-    public int Heading{
-        get { return heading; }
-    }
+    public int State => state;
+    public int Heading => heading;
     public abstract int UpdateState();
 }

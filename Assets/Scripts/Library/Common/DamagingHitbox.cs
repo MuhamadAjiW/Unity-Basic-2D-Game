@@ -4,8 +4,8 @@ using UnityEngine;
 public class DamagingHitbox : MonoBehaviour, IDamagingEntity{
     [SerializeField] private float damage = 25f;
     public float Damage {
-        get {return damage;}
-        set {damage = value > 0? value : 0;}
+        get => damage;
+        set => damage = value > 0? value : 0;
     }
 
     public event Action OnDamage;

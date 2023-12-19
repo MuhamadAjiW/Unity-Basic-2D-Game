@@ -17,46 +17,39 @@ public class Player : RigidObject, IMovingEntity, IDamageableEntity{
     public event Action OnDeath;
     public event Action OnDamaged;
 
-
     public float Health {
-        get { return health; }
-        set { health = value; }
-    }
-    public bool Dead {
-        get { return health <= 0; }
+        get => health;
+        set => health = value >= 0? value : 0;
     }
 
     public float SnapshotSpeed{
         set { snapshotSpeed = value; }
     }
 
-    public int JumpLimit{
-        get { return jumpLimit; }
-    }
+    public bool Dead => health <= 0;
+    public int JumpLimit => jumpLimit;
+    public int State => stateController.State;
+    public float JumpForce => jumpForce;
 
-    public int State{
-        get { return stateController.State; }
-    }
+    public float MaxSpeed => State switch{
+        PlayerState.WALKING => walkSpeed,
+        PlayerState.SPRINTING => sprintSpeed,
+        PlayerState.JUMPING => snapshotSpeed,
+        PlayerState.FALLING => snapshotSpeed,
+        _ => 0,
+    };
 
     private new void Awake(){
         base.Awake();
         movement = new PlayerMovement(this);
         stateController = new PlayerStateController(this);
         stance = new PlayerStance(this, ignoreWhileDashing);
-        OnDamaged += Damaged;
         OnDeath += Death;
         stateController.OnDamageDelayOver += DamageCleared;
     }
 
     private void Death(){
         Debug.Log("Player is dead");
-    }
-
-    private void Damaged(){
-        SpriteRenderer.color = Color.red;
-
-        stateController.OnDamaged();
-        Debug.Log("Player is damaged");
     }
 
     private void DamageCleared(){
@@ -66,37 +59,20 @@ public class Player : RigidObject, IMovingEntity, IDamageableEntity{
         }
     }
 
-    public float JumpForce{
-        get { return jumpForce; }
-    }
-
-    public float MaxSpeed{
-        get {
-            return State switch
-            {
-                PlayerState.WALKING => walkSpeed,
-                PlayerState.SPRINTING => sprintSpeed,
-                PlayerState.JUMPING => snapshotSpeed,
-                PlayerState.FALLING => snapshotSpeed,
-                _ => 0,
-            };
-        }
-    }
-
     public float InflictDamage(float damage){
         if(!Dead && !stateController.Damaged){
-            OnDamaged?.Invoke();
+            SpriteRenderer.color = Color.red;
 
-            Debug.Log(string.Format("Remaining health: {0}", health));
             health -= damage;
-            Debug.Log(string.Format("Remaining health: {0}", health));
+            OnDamaged?.Invoke();
             if(Dead) OnDeath?.Invoke();
+            Debug.Log(string.Format("Remaining health: {0}", health));
         }
         return health;
     }
 
     void Update(){
-        base.refresh();
+        refresh();
         movement.Jump();
         stance.Execute();
     }

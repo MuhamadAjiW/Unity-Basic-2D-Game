@@ -10,11 +10,11 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
         this.player = player;
     }
 
-    public override void OnDamaged(){
+    protected override void OnDamaged(){
         damaged = true;
         player.StartCoroutine(DamagedDelay());
     }
-    public override void OnDeath(){}
+    protected override void OnDeath(){}
 
 
     public override int UpdateState(){
