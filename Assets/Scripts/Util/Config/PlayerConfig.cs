@@ -8,4 +8,7 @@ public static class PlayerConfig{
 
     // STATE
     public static float PLAYER_DAMAGED_STATE_DURATION = 1;
+
+    // DASH
+    public static float PLAYER_DASH_TRAIL_DURATION = 0.2f;
 }

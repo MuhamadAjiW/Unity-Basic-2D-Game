@@ -1,10 +1,9 @@
 using UnityEngine;
 
 public class RigidObject : MonoBehaviour{
-    private Rigidbody2D rigidBody;
-    new private Collider2D collider;
-    private SpriteRenderer sprite;
-
+    protected Rigidbody2D rigidBody;
+    new protected Collider2D collider;
+    protected SpriteRenderer sprite;
     private bool grounded = false;
 
     public bool Grounded => grounded;
@@ -13,7 +12,7 @@ public class RigidObject : MonoBehaviour{
     public SpriteRenderer SpriteRenderer => sprite;
     public Vector2 Position => transform.position;
 
-    public void Awake(){
+    protected void Awake(){
         rigidBody = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();

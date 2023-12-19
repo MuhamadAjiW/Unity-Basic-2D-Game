@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : RigidObject, IMovingEntity, IDamageableEntity{
-    [SerializeField] private float health = 100;
+public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 25;
     [SerializeField] private int jumpLimit = 2;
@@ -14,19 +13,10 @@ public class Player : RigidObject, IMovingEntity, IDamageableEntity{
     private PlayerStance stance;
     private PlayerStateController stateController;
     
-    public event Action OnDeath;
-    public event Action OnDamaged;
-
-    public float Health {
-        get => health;
-        set => health = value >= 0? value : 0;
-    }
-
     public float SnapshotSpeed{
         set { snapshotSpeed = value; }
     }
 
-    public bool Dead => health <= 0;
     public int JumpLimit => jumpLimit;
     public int State => stateController.State;
     public float JumpForce => jumpForce;
@@ -59,16 +49,16 @@ public class Player : RigidObject, IMovingEntity, IDamageableEntity{
         }
     }
 
-    public float InflictDamage(float damage){
+    public override float InflictDamage(float damage){
         if(!Dead && !stateController.Damaged){
             SpriteRenderer.color = Color.red;
 
-            health -= damage;
-            OnDamaged?.Invoke();
-            if(Dead) OnDeath?.Invoke();
-            Debug.Log(string.Format("Remaining health: {0}", health));
+            Health -= damage;
+            InvokeOnDamaged();
+            if(Dead) InvokeOnDeath();
+            Debug.Log(string.Format("Player remaining health: {0}", Health));
         }
-        return health;
+        return Health;
     }
 
     void Update(){

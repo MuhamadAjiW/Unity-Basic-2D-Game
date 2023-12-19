@@ -1,18 +1,11 @@
 using System;
 using UnityEngine;
 
-public class DamagingHitbox : MonoBehaviour, IDamagingEntity{
-    [SerializeField] private float damage = 25f;
-    public float Damage {
-        get => damage;
-        set => damage = value > 0? value : 0;
-    }
-
-    public event Action OnDamage;
-
+public class DamagingHitbox : DamagingObject{
     void OnTriggerStay2D(Collider2D otherCollider){
-        Debug.Log(string.Format("Collision in hitbox of {0} by {1}", transform.parent.name, otherCollider.transform.name));
-        if(!otherCollider.transform.TryGetComponent<IDamageableEntity>(out var enemyScript)) return;
-        enemyScript.InflictDamage(Damage);
+        Debug.Log(string.Format("Collision in hitbox of {0} by {1}", transform.name, otherCollider.transform.name));
+        if(!otherCollider.transform.TryGetComponent<IDamageableEntity>(out var otherScript)) return;
+        otherScript.InflictDamage(Damage);
+        InvokeOnDamage();
     }
 }
