@@ -17,17 +17,66 @@ public static class ObjectManager{
 
         if(prefabObject == null) Debug.LogError("Prefab not found: " + prefabPath);
         
-        GameObject attackObject = parent == null? GameObject.Instantiate(prefabObject) : GameObject.Instantiate(prefabObject, parent);
-        if(position != null) attackObject.transform.position = position.Value;
-        if(rotation != null) attackObject.transform.rotation = rotation.Value;
-        if(scale != null) attackObject.transform.localScale = scale.Value;
+        GameObject gameObject = parent == null? GameObject.Instantiate(prefabObject) : GameObject.Instantiate(prefabObject, parent);
+        if(position != null) gameObject.transform.position = position.Value;
+        if(rotation != null) gameObject.transform.rotation = rotation.Value;
+        if(scale != null) gameObject.transform.localScale = scale.Value;
         
-        Renderer renderer = attackObject.GetComponent<Renderer>();
+        Renderer renderer = gameObject.GetComponent<Renderer>();
         if (renderer != null) renderer.sortingOrder = sortingOrder;
         
-        attackObject.name = name;
+        gameObject.name = name;
 
-        return attackObject;
+        return gameObject;
+    }
+
+    public static GameObject Generate(
+        GameObject targetObject,
+        Transform parent = null,
+        Vector2? position = null,
+        Vector2? scale = null,
+        Quaternion? rotation = null,
+        int sortingOrder = 0,
+        string name = "attackObject"
+        )
+    {
+        GameObject gameObject = parent == null? GameObject.Instantiate(targetObject) : GameObject.Instantiate(targetObject, parent);
+        if(position != null) gameObject.transform.position = position.Value;
+        if(rotation != null) gameObject.transform.rotation = rotation.Value;
+        if(scale != null) gameObject.transform.localScale = scale.Value;
+        
+        Renderer renderer = gameObject.GetComponent<Renderer>();
+        if (renderer != null) renderer.sortingOrder = sortingOrder;
+        
+        gameObject.name = name;
+
+        return gameObject;
+    }
+
+    public static GameObject GenerateAttackObject(
+        string prefabPath,
+        float? damage = null,
+        Direction? knockbackDirection = null,
+        bool isPlayer = false,
+        bool isEnemy = false,
+        Transform parent = null,
+        Vector2? position = null,
+        Vector2? scale = null,
+        Quaternion? rotation = null,
+        int sortingOrder = 0,
+        string name = "attackObject"
+        )
+    {
+        GameObject prefabObject = Resources.Load<GameObject>(prefabPath);
+        if (!prefabObject.TryGetComponent<DamagingObject>(out var damagingObject)) Debug.LogError("Tried instantiating attackObject on non attack object: " + prefabPath + ", try using Generate instead");
+
+        if(damage != null){
+            damagingObject.Damage = damage.Value;
+            if(isPlayer) damagingObject.Damage *= PlayerConfig.GLOBAL_DAMAGE_MULTIPLIER;
+            if(isEnemy) damagingObject.Damage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
+        }
+
+        return Generate(prefabObject, parent, position, scale, rotation, sortingOrder, name);
     }
 
     public static void Destroy(GameObject gameObject, float delay = 0){
@@ -42,4 +91,5 @@ public static class ObjectManager{
         yield return new WaitForSeconds(delay);
         GameObject.Destroy(gameObject);
     }
+
 }

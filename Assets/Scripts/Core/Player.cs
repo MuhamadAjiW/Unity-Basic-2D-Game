@@ -12,6 +12,7 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
     private PlayerMovement movement;
     private PlayerStance stance;
     private PlayerStateController stateController;
+    new public bool Damageable => !Dead && !stateController.Damaged;
     
     public float SnapshotSpeed{
         set { snapshotSpeed = value; }
@@ -31,6 +32,7 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
 
     private new void Awake(){
         base.Awake();
+        Health = baseHealth * PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
         movement = new PlayerMovement(this);
         stateController = new PlayerStateController(this);
         stance = new PlayerStance(this, ignoreWhileDashing);
@@ -51,15 +53,10 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
         }
     }
 
-    public override float InflictDamage(float damage){
-        if(!Dead && !stateController.Damaged){
-            SpriteRenderer.color = Color.red;
-
-            Health -= damage;
-            InvokeOnDamaged();
-            if(Dead) InvokeOnDeath();
-            Debug.Log(string.Format("Player remaining health: {0}", Health));
-        }
+    public new float InflictDamage(float damage){
+        SpriteRenderer.color = Color.red;
+        base.InflictDamage(damage);
+        
         return Health;
     }
 

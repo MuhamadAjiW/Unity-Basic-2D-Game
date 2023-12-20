@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FollowObject : CameraBehaviour {
     public Transform objectToFollow;
-    public float followingTime = CameraConfig.CAMERA_FOLLOWING_SPEED;
+    public float followingTime = CameraConfig.FOLLOWING_SPEED;
     private Vector3 velocity = Vector3.zero;
     
     void LateUpdate(){

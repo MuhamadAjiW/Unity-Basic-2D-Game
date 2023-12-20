@@ -11,6 +11,7 @@ public class RigidObject : MonoBehaviour{
     public Collider2D Collider => collider;
     public SpriteRenderer SpriteRenderer => sprite;
     public Vector2 Position => transform.position;
+    public float knockbackResistance = 0; 
 
     protected void Awake(){
         rigidBody = GetComponent<Rigidbody2D>();

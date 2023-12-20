@@ -89,7 +89,7 @@ public class PlayerStance{
                 sortingOrder: -1000
             );
             
-            ObjectManager.Destroy(dashTrail, PlayerConfig.PLAYER_DASH_TRAIL_DURATION);
+            ObjectManager.Destroy(dashTrail, PlayerConfig.DASH_TRAIL_DURATION);
 
             player.transform.position = player.Position + dashVector * dashDistance;
         }

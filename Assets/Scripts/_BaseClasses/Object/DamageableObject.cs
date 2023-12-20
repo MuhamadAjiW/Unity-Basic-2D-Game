@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class DamageableObject : RigidObject, IDamageableEntity
+public class DamageableObject : RigidObject, IDamageableEntity
 {
     [SerializeField] protected float baseHealth = 100;
     private float health;
@@ -11,6 +11,7 @@ public abstract class DamageableObject : RigidObject, IDamageableEntity
         set => health = value > 0? value : 0;
     }
 
+    public bool Damageable => Dead;
     public bool Dead => health <= 0;
     public event Action OnDeath;
     public event Action OnDamaged;
@@ -25,5 +26,12 @@ public abstract class DamageableObject : RigidObject, IDamageableEntity
     protected void InvokeOnDamaged(){
         OnDamaged?.Invoke();
     }
-    public abstract float InflictDamage(float damage);
+    public float InflictDamage(float damage){
+        Health -= damage;
+        InvokeOnDamaged();
+        if(Dead) InvokeOnDeath();
+        Debug.Log(string.Format("{0} remaining health: {1}", name, Health));
+
+        return Health;
+    }
 }

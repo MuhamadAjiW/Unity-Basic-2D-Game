@@ -31,13 +31,13 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift)){
             state = PlayerState.SPRINTING;
-            this.heading = Input.GetAxisRaw("Horizontal") == 1? HeadingDirection.RIGHT : HeadingDirection.LEFT;
+            this.heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
             return PlayerState.SPRINTING;
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0){
             state = PlayerState.WALKING;
-            this.heading = Input.GetAxisRaw("Horizontal") == 1? HeadingDirection.RIGHT : HeadingDirection.LEFT;
+            this.heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
             return PlayerState.WALKING;
         }
         state = PlayerState.IDLE;
@@ -46,7 +46,7 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
 
     private IEnumerator DamagedDelay(){
         if(!player.Dead){
-            yield return new WaitForSeconds(PlayerConfig.PLAYER_DAMAGED_STATE_DURATION);
+            yield return new WaitForSeconds(PlayerConfig.DAMAGED_STATE_DURATION);
             damaged = false;
             invokeDamageDelayOver();
         }

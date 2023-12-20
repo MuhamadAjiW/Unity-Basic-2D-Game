@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class Dummy : EnemyObject{
     private DummyStateController stateController;
+    new public bool Damageable => !Dead && !stateController.Damaged;
     private new void Awake(){
         base.Awake();
-        Health = baseHealth * EnemyConfig.ENEMY_GLOBAL_HEALTH_MULTIPLIER;
+        Health = baseHealth * EnemyConfig.GLOBAL_HEALTH_MULTIPLIER;
         SpriteRenderer.color = Color.gray;
         stateController = new DummyStateController(this);
         OnDeath += Death;
@@ -23,15 +24,10 @@ public class Dummy : EnemyObject{
         }
     }
 
-    public override float InflictDamage(float damage){
-        if(!Dead && !stateController.Damaged){
-            SpriteRenderer.color = Color.red;
-
-            Health -= damage;
-            InvokeOnDamaged();
-            if(Dead) InvokeOnDeath();
-            Debug.Log(string.Format("Dummy remaining health: {0}", Health));
-        }
+    new public float InflictDamage(float damage){
+        SpriteRenderer.color = Color.red;
+        base.InflictDamage(damage);
+        
         return Health;
     }
 

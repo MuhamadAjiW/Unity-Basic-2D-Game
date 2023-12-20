@@ -6,10 +6,10 @@ public static class Util{
         string direction = "UNKNOWN";
 
         switch(controller.Heading){
-            case HeadingDirection.RIGHT:
+            case Direction.RIGHT:
                 direction = "right";
                 break;
-            case HeadingDirection.LEFT:
+            case Direction.LEFT:
                 direction = "left";
                 break;
         }
