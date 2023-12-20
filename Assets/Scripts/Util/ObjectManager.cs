@@ -34,7 +34,7 @@ public static class ObjectManager{
         GameObject targetObject,
         Transform parent = null,
         Vector2? position = null,
-        Vector2? scale = null,
+        Vector2? scaleModifier = null,
         Quaternion? rotation = null,
         int sortingOrder = 0,
         string name = "attackObject"
@@ -43,7 +43,7 @@ public static class ObjectManager{
         GameObject gameObject = parent == null? GameObject.Instantiate(targetObject) : GameObject.Instantiate(targetObject, parent);
         if(position != null) gameObject.transform.position = position.Value;
         if(rotation != null) gameObject.transform.rotation = rotation.Value;
-        if(scale != null) gameObject.transform.localScale = scale.Value;
+        if(scaleModifier != null) gameObject.transform.localScale *= scaleModifier.Value;
         
         Renderer renderer = gameObject.GetComponent<Renderer>();
         if (renderer != null) renderer.sortingOrder = sortingOrder;
@@ -62,7 +62,7 @@ public static class ObjectManager{
         bool isEnemy = false,
         Transform parent = null,
         Vector2? position = null,
-        Vector2? scale = null,
+        Vector2? scaleModifier = null,
         Quaternion? rotation = null,
         int sortingOrder = 0,
         string name = "attackObject"
@@ -92,7 +92,7 @@ public static class ObjectManager{
             damagingObject.KnockbackDirection = knockbackDirection.Value;
         }
 
-        return Generate(prefabObject, parent, position, scale, rotation, sortingOrder, name);
+        return Generate(prefabObject, parent, position, scaleModifier, rotation, sortingOrder, name);
     }
 
     public static void Destroy(GameObject gameObject, float delay = 0){

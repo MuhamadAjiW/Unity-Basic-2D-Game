@@ -68,6 +68,9 @@ public class PlayerStanceController{
                     return;
             }
 
+            Vector2 scaleModifier = new Vector2(1,1);
+            scaleModifier.x *= dashDistance/dashRange;
+
             //TODO: Weapon adjustment for damage and knockback power
             GameObject dashTrail = ObjectManager.GenerateAttackObject(
                 PrefabsPath.PREFAB_PLAYER_DASH,
@@ -75,8 +78,8 @@ public class PlayerStanceController{
                 knockbackPower: 500,
                 damage: 10,
                 isPlayer: true,
-
                 position: trailPosition,
+                scaleModifier: scaleModifier,
                 rotation: trailRotation,
                 name: "Dashtrail",
                 sortingOrder: -1000
