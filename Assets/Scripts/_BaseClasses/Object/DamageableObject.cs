@@ -10,8 +10,6 @@ public class DamageableObject : RigidObject, IDamageableEntity
         get => health;
         set => health = value > 0? value : 0;
     }
-
-    public bool Damageable => Dead;
     public bool Dead => health <= 0;
     public event Action OnDeath;
     public event Action OnDamaged;
@@ -26,7 +24,10 @@ public class DamageableObject : RigidObject, IDamageableEntity
     protected void InvokeOnDamaged(){
         OnDamaged?.Invoke();
     }
-    public float InflictDamage(float damage){
+
+    // Overrideables
+    public virtual bool Damageable => !Dead;
+    public virtual float InflictDamage(float damage){
         Health -= damage;
         InvokeOnDamaged();
         if(Dead) InvokeOnDeath();

@@ -32,7 +32,14 @@ public class RigidObject : MonoBehaviour{
         }
     }
 
-    protected void refresh(){
+    protected void Refresh(){
         Rigidbody.AddForce(Vector2.zero);
+    }
+
+    protected void Smoothen(){
+        Vector2 dampVelocity = Vector2.zero;
+        Vector2 velocity = Rigidbody.velocity;
+        velocity.x = 0;
+        Rigidbody.velocity = Vector2.SmoothDamp(Rigidbody.velocity, velocity, ref dampVelocity, EnvironmentConfig.MOVEMENT_SMOOTHING);
     }
 }

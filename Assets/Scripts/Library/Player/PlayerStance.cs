@@ -28,52 +28,39 @@ public class PlayerStance{
 
 
     private void Dash(){
-        char key = 'n';
-        if(Input.GetKey(KeyCode.UpArrow))           key = 'w';
-        else if(Input.GetKey(KeyCode.RightArrow))   key = 'd';
-        else if(Input.GetKey(KeyCode.DownArrow))    key = 's';
-        else if(Input.GetKey(KeyCode.LeftArrow))    key = 'a';
+        Direction direction = Direction.NULL;
+        if(Input.GetKey(KeyCode.UpArrow))           direction = Direction.UP;
+        else if(Input.GetKey(KeyCode.RightArrow))   direction = Direction.RIGHT;
+        else if(Input.GetKey(KeyCode.DownArrow))    direction = Direction.DOWN;
+        else if(Input.GetKey(KeyCode.LeftArrow))    direction = Direction.LEFT;
         else                                        return;
 
         Vector2 dashVector;
-        switch (key){
-            case 'w': dashVector = Vector2.up; break;
-            case 'd': dashVector = Vector2.right; break;
-            case 's': dashVector = Vector2.down; break;
-            case 'a': dashVector = Vector2.left; break;
-            default: Debug.LogError("Undefined dashVector"); return;
+        switch (direction){
+            case Direction.UP: dashVector = Vector2.up; break;
+            case Direction.RIGHT: dashVector = Vector2.right; break;
+            case Direction.DOWN: dashVector = Vector2.down; break;
+            case Direction.LEFT: dashVector = Vector2.left; break;
+            default: Debug.LogError("Undefined direction"); return;
         }
 
         float dashDistance = DetectDash(dashVector);
         if(Input.GetKeyDown(KeyCode.LeftShift)){
-            // Debug.Log("Dashed");
-
-            // GameObject gameObject = new GameObject();
-            // gameObject.name = "gameObject";
-            // SpriteRenderer spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
-            // Sprite tileBlankSprite = Resources.Load<Sprite>("Graphics/Misc/TileBlank");
-
-            // if (tileBlankSprite != null) {
-            //     spriteRenderer.sprite = tileBlankSprite;
-            // } else {
-            //     Debug.LogError("Sprite not found.");
-            // }
-
             Vector2 trailPosition = player.Position;
             Quaternion? trailRotation = null;
-            switch (key){
-                case 'w':
+            switch (direction){
+                case Direction.UP:
                     trailRotation = Quaternion.Euler(0,0,90f);
                     trailPosition.y += dashDistance / 2;
                     break;
-                case 'd':
+                case Direction.RIGHT:
                     trailPosition.x += dashDistance / 2;
                     break;
-                case 's':
+                case Direction.DOWN:
                     trailRotation = Quaternion.Euler(0,0,90f);
                     trailPosition.y -= dashDistance / 2;
                     break;
-                case 'a':
+                case Direction.LEFT:
                     trailPosition.x -= dashDistance / 2;
                     break;
                 default:
@@ -81,8 +68,14 @@ public class PlayerStance{
                     return;
             }
 
-            GameObject dashTrail = ObjectManager.Generate(
+            //TODO: Weapon adjustment for damage and knockback power
+            GameObject dashTrail = ObjectManager.GenerateAttackObject(
                 PrefabsPath.PREFAB_PLAYER_DASH,
+                knockbackDirection: direction,
+                knockbackPower: 500,
+                damage: 10,
+                isPlayer: true,
+
                 position: trailPosition,
                 rotation: trailRotation,
                 name: "Dashtrail",

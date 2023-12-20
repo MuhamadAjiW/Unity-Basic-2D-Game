@@ -20,8 +20,9 @@ public class DummyStateController : DamageableEntityStateController<Dummy> {
 
     private IEnumerator DamagedDelay(){
         if(!dummy.Dead){
-            yield return new WaitForSeconds(PlayerConfig.DAMAGED_STATE_DURATION);
+            yield return new WaitForSeconds(EnemyConfig.DAMAGED_STATE_DURATION);
             damaged = false;
+            Debug.Log("Called");
             invokeDamageDelayOver();
         }
     }

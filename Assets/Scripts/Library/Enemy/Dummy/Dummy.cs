@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Dummy : EnemyObject{
     private DummyStateController stateController;
-    new public bool Damageable => !Dead && !stateController.Damaged;
+    public override bool Damageable => !Dead && !stateController.Damaged;
     private new void Awake(){
         base.Awake();
         Health = baseHealth * EnemyConfig.GLOBAL_HEALTH_MULTIPLIER;
@@ -24,15 +24,16 @@ public class Dummy : EnemyObject{
         }
     }
 
-    new public float InflictDamage(float damage){
+    public override float InflictDamage(float damage){
         SpriteRenderer.color = Color.red;
         base.InflictDamage(damage);
-        
+
         return Health;
     }
 
     void Update(){
-        refresh();
+        Refresh();
+        Smoothen();
     }
 
     void FixedUpdate(){

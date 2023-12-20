@@ -57,6 +57,7 @@ public static class ObjectManager{
         string prefabPath,
         float? damage = null,
         Direction? knockbackDirection = null,
+        float? knockbackPower = null,
         bool isPlayer = false,
         bool isEnemy = false,
         Transform parent = null,
@@ -74,6 +75,14 @@ public static class ObjectManager{
             damagingObject.Damage = damage.Value;
             if(isPlayer) damagingObject.Damage *= PlayerConfig.GLOBAL_DAMAGE_MULTIPLIER;
             if(isEnemy) damagingObject.Damage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
+        }
+
+        if(knockbackPower != null){
+            damagingObject.KnockbackPower = knockbackPower.Value;
+        }
+
+        if(knockbackDirection != null){
+            damagingObject.KnockbackDirection = knockbackDirection.Value;
         }
 
         return Generate(prefabObject, parent, position, scale, rotation, sortingOrder, name);

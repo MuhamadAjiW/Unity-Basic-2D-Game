@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
+public class Player : DamageableObject, IMovingEntity{
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 25;
     [SerializeField] private int jumpLimit = 2;
@@ -12,7 +12,7 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
     private PlayerMovement movement;
     private PlayerStance stance;
     private PlayerStateController stateController;
-    new public bool Damageable => !Dead && !stateController.Damaged;
+    public override bool Damageable => !Dead && !stateController.Damaged;
     
     public float SnapshotSpeed{
         set { snapshotSpeed = value; }
@@ -53,15 +53,15 @@ public class Player : DamageableObject, IMovingEntity, IDamageableEntity{
         }
     }
 
-    public new float InflictDamage(float damage){
+    public override float InflictDamage(float damage){
         SpriteRenderer.color = Color.red;
         base.InflictDamage(damage);
-        
+
         return Health;
     }
 
     void Update(){
-        refresh();
+        Refresh();
         movement.Jump();
         stance.Execute();
     }
