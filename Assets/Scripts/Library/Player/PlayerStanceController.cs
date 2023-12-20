@@ -1,12 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerStance{
+public class PlayerStanceController{
     private Player player;
     public float dashRange = 10;
     private LayerMask ignored;
 
-    public PlayerStance(Player player, LayerMask ignored){
+    public PlayerStanceController(Player player, LayerMask ignored){
         this.player = player;
         this.ignored = ignored;
     }

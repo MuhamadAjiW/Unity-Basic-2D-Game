@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement {
+public class PlayerMovementController {
     private Player player;
     private int jumpCounter;
     private bool jumpDelayOver = true;
     
-    public PlayerMovement(Player player){
+    public PlayerMovementController(Player player){
         this.player = player;
         jumpCounter = player.JumpLimit;
     }

@@ -9,8 +9,8 @@ public class Player : DamageableObject, IMovingEntity{
     [SerializeField] private LayerMask ignoreWhileDashing;
     private float snapshotSpeed = 25;
 
-    private PlayerMovement movement;
-    private PlayerStance stance;
+    private PlayerMovementController movement;
+    private PlayerStanceController stance;
     private PlayerStateController stateController;
     public override bool Damageable => !Dead && !stateController.Damaged;
     
@@ -33,9 +33,9 @@ public class Player : DamageableObject, IMovingEntity{
     private new void Awake(){
         base.Awake();
         Health = baseHealth * PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
-        movement = new PlayerMovement(this);
+        movement = new PlayerMovementController(this);
         stateController = new PlayerStateController(this);
-        stance = new PlayerStance(this, ignoreWhileDashing);
+        stance = new PlayerStanceController(this, ignoreWhileDashing);
         OnDeath += Death;
         stateController.OnDamageDelayOver += DamageCleared;
     }

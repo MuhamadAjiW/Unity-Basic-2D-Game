@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public class DamagingObject : MonoBehaviour, IDamagingEntity{
-    [SerializeField] protected float baseDamage = 10f;
+    [SerializeField] public float baseDamage = 10f;
     [SerializeField] protected float knockbackPower = 10f;
     [SerializeField] protected Direction knockbackDirection = Direction.ALL;
     private float damage;
@@ -62,7 +62,7 @@ public class DamagingObject : MonoBehaviour, IDamagingEntity{
             }
         }
 
-        Debug.Log(string.Format("Knocking back with power of {0}", knockback));
+        // Debug.Log(string.Format("Knocking back with power of {0}", knockback));
         rigidbody.AddForce(knockback, ForceMode2D.Impulse);
     }
 }

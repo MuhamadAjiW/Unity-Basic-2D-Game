@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8281625252953045929}
   - component: {fileID: 1621012095816395596}
   - component: {fileID: 2350893435909446737}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: DashTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,4 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70f369d2525fd04ea6597fc546df84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  baseDamage: 10
+  knockbackPower: 500
+  knockbackDirection: 0

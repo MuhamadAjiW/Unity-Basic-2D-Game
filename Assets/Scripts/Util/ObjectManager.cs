@@ -72,9 +72,16 @@ public static class ObjectManager{
         if (!prefabObject.TryGetComponent<DamagingObject>(out var damagingObject)) Debug.LogError("Tried instantiating attackObject on non attack object: " + prefabPath + ", try using Generate instead");
 
         if(damage != null){
-            damagingObject.Damage = damage.Value;
-            if(isPlayer) damagingObject.Damage *= PlayerConfig.GLOBAL_DAMAGE_MULTIPLIER;
-            if(isEnemy) damagingObject.Damage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
+            damagingObject.baseDamage = damage.Value;
+        }
+
+        if(isPlayer){
+            prefabObject.layer = LayerMask.NameToLayer("PlayerHitbox");
+            damagingObject.baseDamage *= PlayerConfig.GLOBAL_DAMAGE_MULTIPLIER;
+        }
+        else if(isEnemy){
+            prefabObject.layer = LayerMask.NameToLayer("EnemyHitbox");
+            damagingObject.baseDamage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
         }
 
         if(knockbackPower != null){
