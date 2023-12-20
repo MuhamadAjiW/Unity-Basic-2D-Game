@@ -4,13 +4,20 @@ public class TestWeapon : WeaponObject{
     private const string ATTACK_TRIGGER = "Attacking"; 
     private const string STOP_TRIGGER = "Stopped"; 
 
+    public Collider2D hitbox;
     public bool attackInput = false;
-    
     public bool finalAttack = false;
 
     public bool FinalAttack{
         get {return finalAttack;}
         set {finalAttack = value;}
+    }
+
+    new void Awake(){
+        base.Awake();
+        hitbox = transform.GetComponentInChildren<Collider2D>();
+        Debug.Log(hitbox == null);
+        hitbox.enabled = false;
     }
 
     public override void Attack(){
@@ -23,19 +30,20 @@ public class TestWeapon : WeaponObject{
 
     public void AttackDone(){
         Debug.Log("Attack is done");
+        hitbox.enabled = false;
         finalAttack = false;
         attackInput = false;
         animator.SetBool(STOP_TRIGGER, true);
     }
 
     public void AttackCalled(){
+        hitbox.enabled = true;
         attackInput = false;
         animator.SetBool(ATTACK_TRIGGER, false);
     }
 
     public void FinalAttackCalled(){
         finalAttack = true;
-        attackInput = false;
-        animator.SetBool(ATTACK_TRIGGER, false);
+        AttackCalled();
     }
 }
