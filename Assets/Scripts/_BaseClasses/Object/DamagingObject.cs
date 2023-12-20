@@ -2,10 +2,9 @@ using System;
 using UnityEngine;
 
 public class DamagingObject : MonoBehaviour, IDamagingEntity{
-    [SerializeField] public float baseDamage = 10f;
-    [SerializeField] protected float knockbackPower = 10f;
-    [SerializeField] protected Direction knockbackDirection = Direction.ALL;
-    private float damage;
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private float knockbackPower = 10f;
+    [SerializeField] private Direction knockbackDirection = Direction.ALL;
     public float Damage {
         get => damage;
         set => damage = value;
@@ -21,9 +20,6 @@ public class DamagingObject : MonoBehaviour, IDamagingEntity{
 
 
     public event Action OnDamage;
-    protected void Awake(){
-        Damage = baseDamage;
-    }
     protected void InvokeOnDamage(){
         OnDamage?.Invoke();
     }

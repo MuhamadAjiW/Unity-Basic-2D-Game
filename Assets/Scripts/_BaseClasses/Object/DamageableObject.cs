@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class DamageableObject : RigidObject, IDamageableEntity
 {
-    [SerializeField] protected float baseHealth = 100;
-    private float health;
+    [SerializeField] private float health = 100;
 
     public float Health {
         get => health;
@@ -16,7 +15,6 @@ public class DamageableObject : RigidObject, IDamageableEntity
 
     protected new void Awake(){
         base.Awake();
-        health = baseHealth;
     }
     protected void InvokeOnDeath(){
         OnDeath?.Invoke();

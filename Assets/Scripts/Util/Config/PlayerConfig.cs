@@ -13,6 +13,6 @@ public static class PlayerConfig{
     public static float DASH_TRAIL_DURATION = 0.2f;
 
     // CONFIG
-    public static float GLOBAL_DAMAGE_MULTIPLIER = 100;
+    public static float GLOBAL_DAMAGE_MULTIPLIER = 1;
     public static float GLOBAL_HEALTH_MULTIPLIER = 1;
 }

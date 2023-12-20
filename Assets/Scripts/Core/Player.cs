@@ -32,7 +32,7 @@ public class Player : DamageableObject, IMovingEntity{
 
     private new void Awake(){
         base.Awake();
-        Health = baseHealth * PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
+        Health *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
         movement = new PlayerMovementController(this);
         stateController = new PlayerStateController(this);
         stance = new PlayerStanceController(this, ignoreWhileDashing);

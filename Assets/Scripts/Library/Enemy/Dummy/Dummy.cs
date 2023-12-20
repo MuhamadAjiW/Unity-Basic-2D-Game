@@ -6,7 +6,6 @@ public class Dummy : EnemyObject{
     public override bool Damageable => !Dead && !stateController.Damaged;
     private new void Awake(){
         base.Awake();
-        Health = baseHealth * EnemyConfig.GLOBAL_HEALTH_MULTIPLIER;
         SpriteRenderer.color = Color.gray;
         stateController = new DummyStateController(this);
         OnDeath += Death;
