@@ -6,42 +6,51 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
     private Player player;
     public PlayerStateController(Player player) : base(player){
         this.player = player;
+        OnDamageDelayOver += DamageCleared;
     }
 
     protected override void OnDamaged(){
         damaged = true;
+        InvokeOnStateChanged();
         player.StartCoroutine(DamagedDelay());
     }
-    protected override void OnDeath(){}
-
+    protected override void OnDeath(){
+        GameController.mainCamera.ResetCameraBehaviour();
+        Debug.Log("Player is dead");
+        GameObject.Destroy(player);
+    }
 
     public override int UpdateState(){
+        int initialState = state;
+        Direction initialHeading = heading;
         if(Input.GetKey(KeyCode.LeftControl)){
             state = PlayerState.STANCE;
-            return PlayerState.STANCE;
         }
         else if(!player.Grounded && player.Rigidbody.velocity.y > 0){
             state = PlayerState.JUMPING;
-            return PlayerState.JUMPING;
         }
         else if(!player.Grounded && player.Rigidbody.velocity.y < 0){
             state = PlayerState.FALLING;
-            return PlayerState.JUMPING;
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift)){
             state = PlayerState.SPRINTING;
-            this.heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
-            return PlayerState.SPRINTING;
+            heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0){
             state = PlayerState.WALKING;
-            this.heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
-            return PlayerState.WALKING;
+            heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
         }
-        state = PlayerState.IDLE;
-        return PlayerState.IDLE;
+        else{
+            state = PlayerState.IDLE;
+        }
+
+        if(initialHeading != heading || initialState != state){
+            InvokeOnStateChanged();
+        }
+
+        return state;
     }
 
     private IEnumerator DamagedDelay(){
@@ -49,6 +58,14 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
             yield return new WaitForSeconds(PlayerConfig.DAMAGED_STATE_DURATION);
             damaged = false;
             invokeDamageDelayOver();
+        }
+    }
+
+    private void DamageCleared(){
+        if(!player.Dead){
+            InvokeOnStateChanged();
+            player.SpriteRenderer.color = Color.white;
+            Debug.Log("Player is no longer damaged");
         }
     }
 }

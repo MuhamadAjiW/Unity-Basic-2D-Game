@@ -13,10 +13,11 @@ public class RigidObject : MonoBehaviour{
     public Vector2 Position => transform.position;
     public float knockbackResistance = 0; 
 
+    // Sprite should always be inside a child
     protected void Awake(){
         rigidBody = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
 

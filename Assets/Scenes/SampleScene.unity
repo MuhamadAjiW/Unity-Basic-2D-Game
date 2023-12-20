@@ -1393,6 +1393,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 670263444}
     m_Modifications:
+    - target: {fileID: 221255880968825851, guid: 4c6fd9d0d8b820e46ab55e391ede9ec2, type: 3}
+      propertyPath: knockbackPower
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 221255880968825851, guid: 4c6fd9d0d8b820e46ab55e391ede9ec2, type: 3}
+      propertyPath: knockbackDirection
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 597399132753341320, guid: 4c6fd9d0d8b820e46ab55e391ede9ec2, type: 3}
+      propertyPath: health
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 597399132753341320, guid: 4c6fd9d0d8b820e46ab55e391ede9ec2, type: 3}
+      propertyPath: knockbackResistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2441253434040438050, guid: 4c6fd9d0d8b820e46ab55e391ede9ec2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.12
@@ -1498,6 +1514,10 @@ PrefabInstance:
     - target: {fileID: 8967687025875339529, guid: aa7e2d9ffeac02445abe133c7945de00, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170464984063889895, guid: aa7e2d9ffeac02445abe133c7945de00, type: 3}
+      propertyPath: knockbackResistance
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

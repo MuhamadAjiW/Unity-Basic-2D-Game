@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : DamageableObject, IMovingEntity{
+public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 25;
     [SerializeField] private int jumpLimit = 2;
@@ -9,18 +9,26 @@ public class Player : DamageableObject, IMovingEntity{
     [SerializeField] private LayerMask ignoreWhileDashing;
     private float snapshotSpeed = 25;
 
-    private PlayerMovementController movement;
-    private PlayerStanceController stance;
+    private PlayerAnimationController animationController;
+    private PlayerMovementController movementController;
+    private PlayerStanceController stanceController;
     private PlayerStateController stateController;
+    private WeaponObject weapon;
     public override bool Damageable => !Dead && !stateController.Damaged;
-    
+
+    public int State => stateController.State;
+    public EntityStateController StateController => stateController;
+    public Action AddOnStateChange {
+        set { stateController.OnStateChange += value; }
+    }
+
     public float SnapshotSpeed{
         set { snapshotSpeed = value; }
     }
 
     public int JumpLimit => jumpLimit;
-    public int State => stateController.State;
     public float JumpForce => jumpForce;
+    public WeaponObject Weapon => weapon;
 
     public float MaxSpeed => State switch{
         PlayerState.WALKING => walkSpeed,
@@ -32,25 +40,13 @@ public class Player : DamageableObject, IMovingEntity{
 
     private new void Awake(){
         base.Awake();
+        weapon = GetComponentInChildren<WeaponObject>();
         Health *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
-        movement = new PlayerMovementController(this);
+        
+        movementController = new PlayerMovementController(this);
         stateController = new PlayerStateController(this);
-        stance = new PlayerStanceController(this, ignoreWhileDashing);
-        OnDeath += Death;
-        stateController.OnDamageDelayOver += DamageCleared;
-    }
-
-    private void Death(){
-        GameController.mainCamera.ResetCameraBehaviour();
-        Debug.Log("Player is dead");
-        GameObject.Destroy(this);
-    }
-
-    private void DamageCleared(){
-        if(!Dead){
-            SpriteRenderer.color = Color.white;
-            Debug.Log("Player is no longer damaged");
-        }
+        stanceController = new PlayerStanceController(this, ignoreWhileDashing);
+        animationController = new PlayerAnimationController(this);
     }
 
     public override float InflictDamage(float damage){
@@ -62,14 +58,14 @@ public class Player : DamageableObject, IMovingEntity{
 
     void Update(){
         Refresh();
-        movement.Jump();
-        stance.Execute();
+        movementController.Jump();
+        stanceController.Execute();
     }
 
     void FixedUpdate(){
         // Util.PrintPlayerState(stateController);
         stateController.UpdateState();
-        movement.Move();
+        movementController.Move();
     }
 
 }

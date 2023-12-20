@@ -34,10 +34,4 @@ public class Dummy : EnemyObject{
         Refresh();
         Smoothen();
     }
-
-    void FixedUpdate(){
-        // Util.PrintPlayerState(stateController);
-        stateController.UpdateState();
-    }
-
 }
