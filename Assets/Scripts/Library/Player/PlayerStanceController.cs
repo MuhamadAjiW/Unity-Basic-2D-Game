@@ -75,8 +75,8 @@ public class PlayerStanceController{
             GameObject dashTrail = ObjectManager.GenerateAttackObject(
                 PrefabsPath.PREFAB_PLAYER_DASH,
                 knockbackDirection: direction,
-                knockbackPower: 500,
-                damage: 10,
+                knockbackPower: player.Weapon.KnockbackPower,
+                damage: player.Weapon.Damage,
                 isPlayer: true,
                 position: trailPosition,
                 scaleModifier: scaleModifier,

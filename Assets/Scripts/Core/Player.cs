@@ -10,6 +10,7 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
     private float snapshotSpeed = 25;
 
     private PlayerAnimationController animationController;
+    private PlayerAttackController attackController;
     private PlayerMovementController movementController;
     private PlayerStanceController stanceController;
     private PlayerStateController stateController;
@@ -42,11 +43,12 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         base.Awake();
         weapon = GetComponentInChildren<WeaponObject>();
         Health *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
-        
-        movementController = new PlayerMovementController(this);
+
         stateController = new PlayerStateController(this);
-        stanceController = new PlayerStanceController(this, ignoreWhileDashing);
         animationController = new PlayerAnimationController(this);
+        attackController = new PlayerAttackController(this);
+        movementController = new PlayerMovementController(this);
+        stanceController = new PlayerStanceController(this, ignoreWhileDashing);
     }
 
     public override float InflictDamage(float damage){
@@ -60,6 +62,7 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         Refresh();
         movementController.Jump();
         stanceController.Execute();
+        attackController.Execute();
     }
 
     void FixedUpdate(){
