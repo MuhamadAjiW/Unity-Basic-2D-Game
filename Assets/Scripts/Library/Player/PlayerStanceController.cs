@@ -3,8 +3,19 @@ using UnityEngine;
 
 public class PlayerStanceController{
     private Player player;
-    public float dashRange = 10;
+    private float dashRange = 10;
+    private float dashCost = 50;
     private LayerMask ignored;
+
+    public float DashRange{
+        get { return dashRange; }
+        set { dashRange = value > 0 ? value : 0; }
+    }
+
+    public float DashCost{
+        get { return dashCost; }
+        set { dashCost = value > 0 ? value : 0; }
+    }
 
     public PlayerStanceController(Player player, LayerMask ignored){
         this.player = player;
@@ -46,6 +57,8 @@ public class PlayerStanceController{
 
         float dashDistance = DetectDash(dashVector);
         if(Input.GetKeyDown(KeyCode.LeftShift)){
+            if(player.Stamina < DashCost) return;
+
             Vector2 trailPosition = player.Position;
             Quaternion? trailRotation = null;
             switch (direction){
@@ -87,6 +100,7 @@ public class PlayerStanceController{
             
             ObjectManager.Destroy(dashTrail, PlayerConfig.DASH_TRAIL_DURATION);
 
+            player.Stamina -= DashCost;
             player.transform.position = player.Position + dashVector * dashDistance;
         }
 

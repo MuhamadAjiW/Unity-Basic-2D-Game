@@ -1,10 +1,15 @@
 using UnityEngine;
 
 public class WeaponObject : DamagingObject{
-    protected SpriteRenderer sprite;
+    private SpriteRenderer sprite;
     public Animator animator; 
+    [SerializeField] private float staminaCost;
     public SpriteRenderer SpriteRenderer => sprite;
     public Animator Animator => animator;
+    public float StaminaCost{
+        get { return staminaCost; }
+        set { staminaCost = value > 0 ? value : staminaCost; }
+    }
 
     // Sprite should always be inside a child
     protected void Awake(){

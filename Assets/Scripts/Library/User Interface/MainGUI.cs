@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainGUI : MonoBehaviour{
-    [SerializeField] Player player;
-    
     void Start(){
 
     }

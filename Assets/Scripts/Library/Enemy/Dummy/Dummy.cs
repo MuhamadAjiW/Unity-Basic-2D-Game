@@ -8,13 +8,9 @@ public class Dummy : EnemyObject{
         base.Awake();
         SpriteRenderer.color = Color.gray;
         stateController = new DummyStateController(this);
-        OnDeath += Death;
         stateController.OnDamageDelayOver += DamageCleared;
     }
 
-    private void Death(){
-        Debug.Log("Dummy is dead");
-    }
 
     private void DamageCleared(){
         if(!Dead){

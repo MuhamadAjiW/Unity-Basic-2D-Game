@@ -9,7 +9,9 @@ public class PlayerAttackController{
 
     public void Execute(){
         if(Input.GetKeyDown(KeyCode.Z) && player.State != PlayerState.STANCE){
+            if(player.Stamina < player.Weapon.StaminaCost) return;
             player.Weapon.Attack();
+            player.Stamina -= player.Weapon.StaminaCost;
         }
     }
 }

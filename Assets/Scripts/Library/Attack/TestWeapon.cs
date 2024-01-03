@@ -16,7 +16,6 @@ public class TestWeapon : WeaponObject{
     new void Awake(){
         base.Awake();
         hitbox = transform.GetComponentInChildren<Collider2D>();
-        Debug.Log(hitbox == null);
         hitbox.enabled = false;
     }
 

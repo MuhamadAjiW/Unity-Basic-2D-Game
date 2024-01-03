@@ -12,7 +12,9 @@ public class DummyStateController : DamageableEntityStateController<Dummy> {
         damaged = true;
         dummy.StartCoroutine(DamagedDelay());
     }
-    protected override void OnDeath(){}
+    protected override void OnDeath(){
+        Debug.Log("Dummy is dead");
+    }
 
     public override int UpdateState(){
         return PlayerState.IDLE;

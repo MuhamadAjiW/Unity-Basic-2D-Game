@@ -4,6 +4,19 @@ using UnityEngine;
 public class PlayerStateController : DamageableEntityStateController<Player> {
 
     private Player player;
+    private float sprintCost = 2;
+    private float sprintCooldownDuration = 2;
+    private bool isSprintCooldown = false;
+
+    public float SprintCost{
+        get { return sprintCost; }
+        set { sprintCost = value > 0? value : 0; }
+    }
+    public float SprintCooldownDuration{
+        get { return sprintCooldownDuration; }
+        set { sprintCooldownDuration = value > 0? value : 0; }
+    }
+
     public PlayerStateController(Player player) : base(player){
         this.player = player;
         OnDamageDelayOver += DamageCleared;
@@ -33,9 +46,18 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
             state = PlayerState.FALLING;
         }
         // Also account current speed
-        else if(Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift)){
-            state = PlayerState.SPRINTING;
-            heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
+        else if(Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift) && !isSprintCooldown){
+            if(player.Stamina < sprintCost){
+                state = PlayerState.WALKING;
+                heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
+            } else{
+                player.Stamina -= sprintCost;
+
+                state = PlayerState.SPRINTING;
+                heading = Input.GetAxisRaw("Horizontal") == 1? Direction.RIGHT : Direction.LEFT;
+
+                if (player.Stamina < sprintCost) GameController.instance.StartCoroutine(SprintCooldown());
+            }
         }
         // Also account current speed
         else if(Input.GetAxisRaw("Horizontal") != 0){
@@ -67,5 +89,12 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
             player.SpriteRenderer.color = Color.white;
             Debug.Log("Player is no longer damaged");
         }
+    }
+
+    private IEnumerator SprintCooldown(){
+        Debug.Log("Sprint on cooldown");
+        isSprintCooldown = true;
+        yield return new WaitForSeconds(SprintCooldownDuration);
+        isSprintCooldown = false;
     }
 }
