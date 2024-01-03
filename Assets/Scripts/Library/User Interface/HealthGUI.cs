@@ -24,7 +24,7 @@ public class HealthBar : MonoBehaviour{
     }
 
     private void updateView(){
-        textComp.text = entity.Health.ToString() + "/" + entity.MaxHealth.ToString();
+        textComp.text = ((int)entity.Health).ToString() + "/" + entity.MaxHealth.ToString();
         sliderComp.maxValue = entity.MaxHealth;
         sliderComp.value = entity.Health;
     }

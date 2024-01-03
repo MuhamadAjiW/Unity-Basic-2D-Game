@@ -23,7 +23,7 @@ public class StaminaBar : MonoBehaviour{
     }
 
     private void updateView(){
-        textComp.text = player.Stamina.ToString() + "/" + player.MaxStamina.ToString();
+        textComp.text = ((int)player.Stamina).ToString() + "/" + player.MaxStamina.ToString();
         sliderComp.maxValue = player.MaxStamina;
         sliderComp.value = player.Stamina;
     }
