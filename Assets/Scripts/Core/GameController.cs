@@ -11,8 +11,6 @@ public class GameController : MonoBehaviour {
     event Action OnInteract;
     event Action OnPause;
     event Action OnUnpause;
-    event Action OnPlayerHit;
-    event Action OnPlayerStaminaUse;
 
     private int[] EventStack;
 

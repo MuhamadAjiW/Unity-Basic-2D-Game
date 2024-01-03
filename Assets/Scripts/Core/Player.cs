@@ -9,6 +9,10 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
     [SerializeField] private LayerMask ignoreWhileDashing;
     private float snapshotSpeed = 25;
 
+    event Action OnHealthUpdate;
+    event Action OnStaminaUpdate;
+
+
     private PlayerAnimationController animationController;
     private PlayerAttackController attackController;
     private PlayerMovementController movementController;
@@ -54,6 +58,7 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
     public override float InflictDamage(float damage){
         SpriteRenderer.color = Color.red;
         base.InflictDamage(damage);
+        OnHealthUpdate?.Invoke();
 
         return Health;
     }
