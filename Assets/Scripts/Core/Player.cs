@@ -58,14 +58,16 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         return Health;
     }
 
-    void Update(){
+    new void Update(){
+        base.Update();
         Refresh();
         movementController.Jump();
         stanceController.Execute();
         attackController.Execute();
     }
 
-    void FixedUpdate(){
+    new void FixedUpdate(){
+        base.FixedUpdate();
         // Util.PrintPlayerState(stateController);
         stateController.UpdateState();
         movementController.Move();

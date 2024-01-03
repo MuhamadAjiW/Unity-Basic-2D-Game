@@ -33,4 +33,12 @@ public class DamageableObject : RigidObject, IDamageableEntity
 
         return Health;
     }
+
+    protected void Update(){
+        if(GameController.instance.IsPaused()) return;
+    }
+
+    protected void FixedUpdate(){
+        if(GameController.instance.IsPaused()) return;
+    }
 }

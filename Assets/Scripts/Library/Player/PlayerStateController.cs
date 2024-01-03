@@ -15,7 +15,7 @@ public class PlayerStateController : DamageableEntityStateController<Player> {
         player.StartCoroutine(DamagedDelay());
     }
     protected override void OnDeath(){
-        GameController.mainCamera.ResetCameraBehaviour();
+        GameController.MainCamera.ResetCameraBehaviour();
         Debug.Log("Player is dead");
         GameObject.Destroy(player);
     }

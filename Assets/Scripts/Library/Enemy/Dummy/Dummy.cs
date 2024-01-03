@@ -30,7 +30,8 @@ public class Dummy : EnemyObject{
         return Health;
     }
 
-    void Update(){
+    new void Update(){
+        base.Update();
         Refresh();
         Smoothen();
     }
