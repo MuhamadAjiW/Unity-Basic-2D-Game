@@ -1,34 +1,40 @@
 using System;
 using UnityEngine;
 
-public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
+public class Player : DamageableObject, IMovingEntity, IStatefulEntity
+{
     [SerializeField] private float maxStamina = 100;
     [SerializeField] private float staminaRegen = 0.25f;
     private float stamina = 100;
     private float staminaRegenModifier = 1;
     private bool allowStaminaRegen = true;
 
-    public float MaxStamina{
+    public float MaxStamina
+    {
         get { return maxStamina; }
-        set { maxStamina = value > 0? value : 0; }
+        set { maxStamina = value > 0 ? value : 0; }
     }
-    public float StaminaRegen{
+    public float StaminaRegen
+    {
         get { return staminaRegen; }
-        set { staminaRegen = value > 0? value : 0; }
+        set { staminaRegen = value > 0 ? value : 0; }
     }
-    public float Stamina{
+    public float Stamina
+    {
         get { return stamina; }
-        set { stamina = value > 0? (value > maxStamina? maxStamina : value) : 0; }
+        set { stamina = value > 0 ? (value > maxStamina ? maxStamina : value) : 0; }
     }
-    public float StaminaRegenModifier{
+    public float StaminaRegenModifier
+    {
         get { return staminaRegenModifier; }
-        set { staminaRegenModifier = value > 0? value : 0; }
+        set { staminaRegenModifier = value > 0 ? value : 0; }
     }
-    public bool AllowStaminaRegen{
+    public bool AllowStaminaRegen
+    {
         get { return allowStaminaRegen; }
         set { allowStaminaRegen = value; }
     }
-    
+
     public event Action OnStaminaUpdate;
 
     [SerializeField] private float walkSpeed = 10;
@@ -50,11 +56,13 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
 
     public int State => stateController.State;
     public EntityStateController StateController => stateController;
-    public Action AddOnStateChange {
+    public Action AddOnStateChange
+    {
         set { stateController.OnStateChange += value; }
     }
 
-    public float SnapshotSpeed{
+    public float SnapshotSpeed
+    {
         set { snapshotSpeed = value; }
     }
 
@@ -62,7 +70,8 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
     public float JumpForce => jumpForce;
     public WeaponObject Weapon => weapon;
 
-    public float MaxSpeed => State switch{
+    public float MaxSpeed => State switch
+    {
         PlayerState.WALKING => walkSpeed,
         PlayerState.SPRINTING => sprintSpeed,
         PlayerState.JUMPING => snapshotSpeed,
@@ -70,7 +79,8 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         _ => 0,
     };
 
-    private new void Awake(){
+    private new void Awake()
+    {
         base.Awake();
         weapon = GetComponentInChildren<WeaponObject>();
         MaxHealth *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
@@ -83,18 +93,21 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         stanceController = new PlayerStanceController(this, ignoreWhileDashing);
     }
 
-    public override float InflictDamage(float damage){
+    public override float InflictDamage(float damage)
+    {
         SpriteRenderer.color = Color.red;
         base.InflictDamage(damage);
 
         return Health;
     }
 
-    public void RegenStamina(){
+    public void RegenStamina()
+    {
         if (allowStaminaRegen) Stamina += StaminaRegen * StaminaRegenModifier;
     }
 
-    new void Update(){
+    new void Update()
+    {
         base.Update();
         float initialStamina = stamina;
 
@@ -103,10 +116,11 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         stanceController.Execute();
         attackController.Execute();
 
-        if(Stamina != initialStamina) OnStaminaUpdate?.Invoke();
+        if (Stamina != initialStamina) OnStaminaUpdate?.Invoke();
     }
 
-    new void FixedUpdate(){
+    new void FixedUpdate()
+    {
         base.FixedUpdate();
         float initialStamina = stamina;
 
@@ -115,6 +129,6 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity{
         movementController.Move();
 
         RegenStamina();
-        if(Stamina != initialStamina) OnStaminaUpdate?.Invoke();
+        if (Stamina != initialStamina) OnStaminaUpdate?.Invoke();
     }
 }

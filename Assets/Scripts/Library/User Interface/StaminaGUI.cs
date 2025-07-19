@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StaminaBar : MonoBehaviour{
+public class StaminaBar : MonoBehaviour
+{
     [SerializeField] Player player;
     private Text textComp;
     private Slider sliderComp;
 
-    void Awake(){
+    void Awake()
+    {
         textComp = GetComponentInChildren<Text>();
         sliderComp = GetComponentInChildren<Slider>();
 
@@ -18,11 +20,13 @@ public class StaminaBar : MonoBehaviour{
         player.OnStaminaUpdate += OnUpdate;
     }
 
-    private void OnUpdate(){
+    private void OnUpdate()
+    {
         updateView();
     }
 
-    private void updateView(){
+    private void updateView()
+    {
         textComp.text = ((int)player.Stamina).ToString() + "/" + player.MaxStamina.ToString();
         sliderComp.maxValue = player.MaxStamina;
         sliderComp.value = player.Stamina;

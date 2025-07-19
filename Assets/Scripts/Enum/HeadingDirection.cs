@@ -1,4 +1,5 @@
-public enum Direction{
+public enum Direction
+{
     NULL = 0,
     UP = 1,
     RIGHT = 2,

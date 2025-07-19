@@ -1,56 +1,71 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovementController {
+public class PlayerMovementController
+{
     private Player player;
     private int jumpCounter;
     private bool jumpDelayOver = true;
-    
-    public PlayerMovementController(Player player){
+
+    public PlayerMovementController(Player player)
+    {
         this.player = player;
         jumpCounter = player.JumpLimit;
     }
 
-    public void Move(){
-        float keyPress = player.State == PlayerState.STANCE? 0 : Input.GetAxisRaw("Horizontal");
+    public void Move()
+    {
+        float keyPress = player.State == PlayerState.STANCE ? 0 : Input.GetAxisRaw("Horizontal");
         Vector2 velocity = new(player.Rigidbody.velocity.x, player.Rigidbody.velocity.y);
 
         Vector2 dampVelocity = Vector2.zero;
-        if(keyPress == 0){
+        if (keyPress == 0)
+        {
             velocity.x = 0;
-        } else{
+        }
+        else
+        {
             float maxSpeed = player.MaxSpeed;
             velocity.x = keyPress * maxSpeed;
         }
 
         player.Rigidbody.velocity = Vector2.SmoothDamp(player.Rigidbody.velocity, velocity, ref dampVelocity, PlayerConfig.MOVEMENT_SMOOTHING);
-        if (player.Rigidbody.velocity.y < 0){
+        if (player.Rigidbody.velocity.y < 0)
+        {
             player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
-        } else if (player.Rigidbody.velocity.y > 0 && !Input.GetButton("Jump")){
+        }
+        else if (player.Rigidbody.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
             player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
         }
     }
 
-    public void Jump(){
-        if(Input.GetButtonDown("Jump") && player.State != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver){
+    public void Jump()
+    {
+        if (Input.GetButtonDown("Jump") && player.State != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver)
+        {
             float snapshotSpeed = Mathf.Abs(player.Rigidbody.velocity.x * 1.3f);
-            player.SnapshotSpeed = Mathf.Abs(snapshotSpeed > PlayerConfig.JUMP_MINIMUM_SPEED?  snapshotSpeed : PlayerConfig.JUMP_MINIMUM_SPEED);
+            player.SnapshotSpeed = Mathf.Abs(snapshotSpeed > PlayerConfig.JUMP_MINIMUM_SPEED ? snapshotSpeed : PlayerConfig.JUMP_MINIMUM_SPEED);
 
             Vector2 force = new Vector2(0, player.JumpForce);
-            
+
             player.Rigidbody.AddForce(force, ForceMode2D.Impulse);
-            
+
             jumpCounter -= 1;
 
             jumpDelayOver = false;
             player.StartCoroutine(DelayJump());
-        } else if (player.Grounded && jumpDelayOver){
+        }
+        else if (player.Grounded && jumpDelayOver)
+        {
             jumpCounter = player.JumpLimit;
         }
     }
 
-    private IEnumerator DelayJump(){
-        for (int i = 0; i < PlayerConfig.JUMP_DELAY; i++){
+    private IEnumerator DelayJump()
+    {
+        for (int i = 0; i < PlayerConfig.JUMP_DELAY; i++)
+        {
             yield return new WaitForFixedUpdate();
         }
         jumpDelayOver = true;

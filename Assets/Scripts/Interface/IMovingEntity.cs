@@ -1,4 +1,5 @@
-public interface IMovingEntity{
-    float JumpForce{get;}
-    float MaxSpeed{get;}
+public interface IMovingEntity
+{
+    float JumpForce { get; }
+    float MaxSpeed { get; }
 }
