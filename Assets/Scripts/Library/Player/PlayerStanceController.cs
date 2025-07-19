@@ -1,8 +1,9 @@
-using UnityEditor;
 using UnityEngine;
-
+ 
 public class PlayerStanceController
 {
+    [SerializeField] private ControlsConfig controlsConfig; // Reference to the ScriptableObject
+
     private Player player;
     private float dashRange = 10;
     private float dashCost = 50;
@@ -48,11 +49,19 @@ public class PlayerStanceController
     private void Dash()
     {
         Direction direction = Direction.NULL;
-        if (Input.GetKey(KeyCode.UpArrow)) direction = Direction.UP;
-        else if (Input.GetKey(KeyCode.RightArrow)) direction = Direction.RIGHT;
-        else if (Input.GetKey(KeyCode.DownArrow)) direction = Direction.DOWN;
-        else if (Input.GetKey(KeyCode.LeftArrow)) direction = Direction.LEFT;
-        else return;
+        if (controlsConfig != null)
+        {
+            if (Input.GetKey(controlsConfig.MoveUp)) direction = Direction.UP;
+            else if (Input.GetKey(controlsConfig.MoveRight)) direction = Direction.RIGHT;
+            else if (Input.GetKey(controlsConfig.MoveDown)) direction = Direction.DOWN;
+            else if (Input.GetKey(controlsConfig.MoveLeft)) direction = Direction.LEFT;
+            else return;
+        }
+        else
+        {
+            Debug.LogWarning("ControlsConfig not assigned to PlayerStanceController.");
+            return;
+        }
 
         Vector2 dashVector;
         switch (direction)
@@ -65,7 +74,7 @@ public class PlayerStanceController
         }
 
         float dashDistance = DetectDash(dashVector);
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (controlsConfig != null && Input.GetKeyDown(controlsConfig.Dash))
         {
             if (player.Stamina < DashCost) return;
 

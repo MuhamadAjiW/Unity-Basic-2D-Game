@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerStateController : DamageableEntityStateController<Player>
 {
-
     private Player player;
     private float sprintCost = 1;
     private float sprintCooldownDuration = 2;
@@ -43,7 +42,7 @@ public class PlayerStateController : DamageableEntityStateController<Player>
     {
         int initialState = state;
         Direction initialHeading = heading;
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (GameController.Controls != null && Input.GetKey(GameController.Controls.Stance))
         {
             state = PlayerState.STANCE;
         }
@@ -56,7 +55,7 @@ public class PlayerStateController : DamageableEntityStateController<Player>
             state = PlayerState.FALLING;
         }
         // Also account current speed
-        else if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(KeyCode.LeftShift) && !isSprintCooldown)
+        else if (GameController.Controls != null && Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(GameController.Controls.Sprint) && !isSprintCooldown)
         {
             if (player.Stamina < sprintCost)
             {

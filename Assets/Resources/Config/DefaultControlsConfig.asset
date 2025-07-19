@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd9168d79e4473419f10b92ef4580f9, type: 3}
+  m_Name: DefaultControlsConfig
+  m_EditorClassIdentifier: 
+  MoveUp: 119
+  MoveLeft: 97
+  MoveRight: 100
+  MoveDown: 115
+  Jump: 32
+  Sprint: 304
+  Stance: 306
+  Attack: 323
+  Interact: 101
+  Dash: 102
+  ToggleConsole: 9
+  ConsoleSlash: 47
+  Confirm: 13
+  Cancel: 27
