@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static ConfigurationManager;
 
 public class DummyStateController : DamageableEntityStateController<Dummy>
 {
@@ -29,7 +30,7 @@ public class DummyStateController : DamageableEntityStateController<Dummy>
     {
         if (!dummy.Dead)
         {
-            yield return new WaitForSeconds(EnemyConfig.DAMAGED_STATE_DURATION);
+            yield return new WaitForSeconds(ConfigurationManager.Instance.enemyConfig.DAMAGED_STATE_DURATION);
             damaged = false;
             invokeDamageDelayOver();
         }

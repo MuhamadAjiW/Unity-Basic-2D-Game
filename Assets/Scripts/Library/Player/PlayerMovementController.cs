@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static ConfigurationManager;
 
 public class PlayerMovementController
 {
@@ -29,14 +30,14 @@ public class PlayerMovementController
             velocity.x = keyPress * maxSpeed;
         }
 
-        player.Rigidbody.velocity = Vector2.SmoothDamp(player.Rigidbody.velocity, velocity, ref dampVelocity, PlayerConfig.MOVEMENT_SMOOTHING);
+        player.Rigidbody.velocity = Vector2.SmoothDamp(player.Rigidbody.velocity, velocity, ref dampVelocity, Instance.playerConfig.MOVEMENT_SMOOTHING);
         if (player.Rigidbody.velocity.y < 0)
         {
-            player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
+            player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (Instance.playerConfig.FALL_SPEED_MULTIPLIER - 1) * Time.deltaTime;
         }
         else if (player.Rigidbody.velocity.y > 0 && !Input.GetButton("Jump"))
         {
-            player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (PlayerConfig.JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
+            player.Rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (Instance.playerConfig.JUMP_LOW_MULTIPLIER - 1) * Time.deltaTime;
         }
     }
 
@@ -45,7 +46,7 @@ public class PlayerMovementController
         if (Input.GetButtonDown("Jump") && player.State != PlayerState.STANCE && jumpCounter > 0 && jumpDelayOver)
         {
             float snapshotSpeed = Mathf.Abs(player.Rigidbody.velocity.x * 1.3f);
-            player.SnapshotSpeed = Mathf.Abs(snapshotSpeed > PlayerConfig.JUMP_MINIMUM_SPEED ? snapshotSpeed : PlayerConfig.JUMP_MINIMUM_SPEED);
+            player.SnapshotSpeed = Mathf.Abs(snapshotSpeed > Instance.playerConfig.JUMP_MINIMUM_SPEED ? snapshotSpeed : Instance.playerConfig.JUMP_MINIMUM_SPEED);
 
             Vector2 force = new Vector2(0, player.JumpForce);
 
@@ -64,7 +65,7 @@ public class PlayerMovementController
 
     private IEnumerator DelayJump()
     {
-        for (int i = 0; i < PlayerConfig.JUMP_DELAY; i++)
+        for (int i = 0; i < Instance.playerConfig.JUMP_DELAY; i++)
         {
             yield return new WaitForFixedUpdate();
         }

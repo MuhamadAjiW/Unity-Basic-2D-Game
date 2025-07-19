@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efd9168d79e4473419f10b92ef4580f9, type: 3}
-  m_Name: DefaultControlsConfig
+  m_Name: ControlsConfig
   m_EditorClassIdentifier: 
   MoveUp: 119
   MoveLeft: 97

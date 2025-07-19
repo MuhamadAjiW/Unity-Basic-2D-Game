@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using static ConfigurationManager;
  
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
     private static CameraController mainCamera;
-    public static ControlsConfig Controls { get; private set; } // Static access to ControlsConfig
     public static CameraController MainCamera { get => mainCamera; set => mainCamera = value; }
+    public static CameraConfig CameraConfig { get => Instance.cameraConfig; }
+    public static EnemyConfig EnemyConfig { get => Instance.enemyConfig; }
+    public static PlayerConfig PlayerConfig { get => Instance.playerConfig; }
 
     private bool paused = false;
 
@@ -20,13 +23,17 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        MainCamera = new CameraController(this.GetComponentInChildren<Camera>());
-        Controls = Resources.Load<ControlsConfig>("ControlsConfig"); // Load from Resources folder
-        if (Controls == null)
+        if (instance == null)
         {
-            Debug.LogError("ControlsConfig not found in Resources folder. Please create one at Assets/Resources/ControlsConfig.asset");
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Make GameController persist across scenes
         }
+        else if (instance != this)
+        {
+            Destroy(gameObject); // Destroy duplicate GameController
+        }
+        MainCamera = new CameraController(this.GetComponentInChildren<Camera>());
+        // ControlsConfig is now managed by ConfigurationManager
     }
 
     public bool IsPaused()
@@ -53,14 +60,14 @@ public class GameController : MonoBehaviour
         // Prevent input during cutscenes
         if (CutsceneManager.Instance != null && CutsceneManager.Instance.IsCutsceneActive())
         {
-            if (Controls != null && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(Controls.Confirm)))
+            if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(ConfigurationManager.Instance.controlsConfig.Confirm)))
             {
                 CutsceneManager.Instance.NextDialogue();
             }
             return;
         }
  
-        if (Controls != null && Input.GetKeyDown(Controls.Cancel))
+        if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null && Input.GetKeyDown(ConfigurationManager.Instance.controlsConfig.Cancel))
         {
             if (paused)
             {

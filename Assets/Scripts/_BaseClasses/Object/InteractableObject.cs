@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ConfigurationManager;
 
 public abstract class InteractableObject : MonoBehaviour, IInteractable
 {
@@ -9,13 +10,13 @@ public abstract class InteractableObject : MonoBehaviour, IInteractable
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            if (GameController.Controls != null)
+            if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null)
             {
-                Debug.Log("Player entered range of " + gameObject.name + ". Press " + GameController.Controls.Interact.ToString() + " to interact.");
+                Debug.Log("Player entered range of " + gameObject.name + ". Press " + ConfigurationManager.Instance.controlsConfig.Interact.ToString() + " to interact.");
             }
             else
             {
-                Debug.LogWarning("ControlsConfig not loaded in GameController. Cannot display interact key.");
+                Debug.LogWarning("ControlsConfig not loaded in ConfigurationManager. Cannot display interact key.");
             }
             // Optionally, show a UI prompt here
         }
@@ -33,7 +34,7 @@ public abstract class InteractableObject : MonoBehaviour, IInteractable
 
     protected virtual void Update()
     {
-        if (playerInRange && GameController.Controls != null && Input.GetKeyDown(GameController.Controls.Interact))
+        if (playerInRange && ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null && Input.GetKeyDown(ConfigurationManager.Instance.controlsConfig.Interact))
         {
             Interact();
         }

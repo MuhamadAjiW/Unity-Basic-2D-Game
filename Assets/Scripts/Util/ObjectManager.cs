@@ -2,6 +2,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using static ConfigurationManager;
 
 public static class ObjectManager{
     public static GameObject Generate(
@@ -77,11 +78,11 @@ public static class ObjectManager{
 
         if(isPlayer){
             prefabObject.layer = LayerMask.NameToLayer("PlayerHitbox");
-            damagingObject.Damage *= PlayerConfig.GLOBAL_DAMAGE_MULTIPLIER;
+            damagingObject.Damage *= ConfigurationManager.Instance.playerConfig.GLOBAL_DAMAGE_MULTIPLIER;
         }
         else if(isEnemy){
             prefabObject.layer = LayerMask.NameToLayer("EnemyHitbox");
-            damagingObject.Damage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
+            damagingObject.Damage *= ConfigurationManager.Instance.enemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
         }
 
         if(knockbackPower != null){

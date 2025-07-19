@@ -1,7 +1,10 @@
+using UnityEngine;
+using static ConfigurationManager;
+
 public class EnemyHitbox : DamagingHitbox
 {
     protected void Awake()
     {
-        Damage *= EnemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
+        Damage *= ConfigurationManager.Instance.enemyConfig.GLOBAL_DAMAGE_MULTIPLIER;
     }
 }

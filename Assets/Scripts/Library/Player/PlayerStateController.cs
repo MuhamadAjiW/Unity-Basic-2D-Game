@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static ConfigurationManager;
 
 public class PlayerStateController : DamageableEntityStateController<Player>
 {
@@ -42,7 +43,7 @@ public class PlayerStateController : DamageableEntityStateController<Player>
     {
         int initialState = state;
         Direction initialHeading = heading;
-        if (GameController.Controls != null && Input.GetKey(GameController.Controls.Stance))
+        if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null && Input.GetKey(ConfigurationManager.Instance.controlsConfig.Stance))
         {
             state = PlayerState.STANCE;
         }
@@ -55,7 +56,7 @@ public class PlayerStateController : DamageableEntityStateController<Player>
             state = PlayerState.FALLING;
         }
         // Also account current speed
-        else if (GameController.Controls != null && Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(GameController.Controls.Sprint) && !isSprintCooldown)
+        else if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.controlsConfig != null && Input.GetAxisRaw("Horizontal") != 0 && Input.GetKey(ConfigurationManager.Instance.controlsConfig.Sprint) && !isSprintCooldown)
         {
             if (player.Stamina < sprintCost)
             {
@@ -95,7 +96,7 @@ public class PlayerStateController : DamageableEntityStateController<Player>
     {
         if (!player.Dead)
         {
-            yield return new WaitForSeconds(PlayerConfig.DAMAGED_STATE_DURATION);
+            yield return new WaitForSeconds(Instance.playerConfig.DAMAGED_STATE_DURATION);
             damaged = false;
             invokeDamageDelayOver();
         }

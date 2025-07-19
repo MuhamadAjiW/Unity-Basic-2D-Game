@@ -1,10 +1,24 @@
 using UnityEngine;
+using static ConfigurationManager;
 
 public class FollowObject : CameraBehaviour
 {
     public Transform objectToFollow;
-    public float followingTime = CameraConfig.FOLLOWING_SPEED;
+    public float followingTime;
     private Vector3 velocity = Vector3.zero;
+
+    private void Awake()
+    {
+        if (ConfigurationManager.Instance != null && ConfigurationManager.Instance.cameraConfig != null)
+        {
+            followingTime = ConfigurationManager.Instance.cameraConfig.FOLLOWING_SPEED;
+        }
+        else
+        {
+            Debug.LogWarning("CameraConfig not loaded in ConfigurationManager for FollowObject. Using default value.");
+            followingTime = 0.2f; // Default value
+        }
+    }
 
     void LateUpdate()
     {

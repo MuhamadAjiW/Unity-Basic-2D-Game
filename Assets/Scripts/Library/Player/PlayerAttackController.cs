@@ -1,8 +1,8 @@
 using UnityEngine;
+using static ConfigurationManager;
  
 public class PlayerAttackController
 {
-    [SerializeField] private ControlsConfig controlsConfig; // Reference to the ScriptableObject
 
     private Player player;
  
@@ -13,7 +13,7 @@ public class PlayerAttackController
  
     public void Execute()
     {
-        if (controlsConfig != null && Input.GetKeyDown(controlsConfig.Attack) && player.State != PlayerState.STANCE)
+        if (Instance != null && Instance.controlsConfig != null && Input.GetKeyDown(Instance.controlsConfig.Attack) && player.State != PlayerState.STANCE)
         {
             if (player.Stamina < player.Weapon.StaminaCost) return;
             player.Weapon.Attack();

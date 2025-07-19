@@ -1,8 +1,12 @@
-public static class EnemyConfig{    
-    // STATE
-    public static float DAMAGED_STATE_DURATION = 1;
+using UnityEngine;
 
-    // CONFIG
-    public static float GLOBAL_DAMAGE_MULTIPLIER = 1;
-    public static float GLOBAL_HEALTH_MULTIPLIER = 1;
+[CreateAssetMenu(fileName = "EnemyConfig", menuName = "ScriptableObjects/Enemy Config", order = 1)]
+public class EnemyConfig : ScriptableObject
+{
+    [Header("State")]
+    [HideInInspector] public float DAMAGED_STATE_DURATION = 1;
+
+    [Header("Config")]
+    public float GLOBAL_DAMAGE_MULTIPLIER = 1;
+    public float GLOBAL_HEALTH_MULTIPLIER = 1;
 }

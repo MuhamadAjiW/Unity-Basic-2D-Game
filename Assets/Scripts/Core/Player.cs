@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static ConfigurationManager;
 
 public class Player : DamageableObject, IMovingEntity, IStatefulEntity
 {
@@ -83,8 +84,8 @@ public class Player : DamageableObject, IMovingEntity, IStatefulEntity
     {
         base.Awake();
         weapon = GetComponentInChildren<WeaponObject>();
-        MaxHealth *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
-        Health *= PlayerConfig.GLOBAL_HEALTH_MULTIPLIER;
+        MaxHealth *= ConfigurationManager.Instance.playerConfig.GLOBAL_HEALTH_MULTIPLIER;
+        Health *= ConfigurationManager.Instance.playerConfig.GLOBAL_HEALTH_MULTIPLIER;
 
         stateController = new PlayerStateController(this);
         animationController = new PlayerAnimationController(this);

@@ -1,8 +1,8 @@
 using UnityEngine;
+using static ConfigurationManager;
  
 public class PlayerStanceController
 {
-    [SerializeField] private ControlsConfig controlsConfig; // Reference to the ScriptableObject
 
     private Player player;
     private float dashRange = 10;
@@ -49,17 +49,17 @@ public class PlayerStanceController
     private void Dash()
     {
         Direction direction = Direction.NULL;
-        if (controlsConfig != null)
+        if (Instance != null && Instance.controlsConfig != null)
         {
-            if (Input.GetKey(controlsConfig.MoveUp)) direction = Direction.UP;
-            else if (Input.GetKey(controlsConfig.MoveRight)) direction = Direction.RIGHT;
-            else if (Input.GetKey(controlsConfig.MoveDown)) direction = Direction.DOWN;
-            else if (Input.GetKey(controlsConfig.MoveLeft)) direction = Direction.LEFT;
+            if (Input.GetKey(Instance.controlsConfig.MoveUp)) direction = Direction.UP;
+            else if (Input.GetKey(Instance.controlsConfig.MoveRight)) direction = Direction.RIGHT;
+            else if (Input.GetKey(Instance.controlsConfig.MoveDown)) direction = Direction.DOWN;
+            else if (Input.GetKey(Instance.controlsConfig.MoveLeft)) direction = Direction.LEFT;
             else return;
         }
         else
         {
-            Debug.LogWarning("ControlsConfig not assigned to PlayerStanceController.");
+            Debug.LogWarning("ControlsConfig not loaded in ConfigurationManager.");
             return;
         }
 
@@ -74,7 +74,7 @@ public class PlayerStanceController
         }
 
         float dashDistance = DetectDash(dashVector);
-        if (controlsConfig != null && Input.GetKeyDown(controlsConfig.Dash))
+        if (Instance != null && Instance.controlsConfig != null && Input.GetKeyDown(Instance.controlsConfig.Dash))
         {
             if (player.Stamina < DashCost) return;
 
@@ -118,7 +118,7 @@ public class PlayerStanceController
                 sortingOrder: -1000
             );
 
-            ObjectManager.Destroy(dashTrail, PlayerConfig.DASH_TRAIL_DURATION);
+            ObjectManager.Destroy(dashTrail, Instance.playerConfig.DASH_TRAIL_DURATION);
 
             player.Stamina -= DashCost;
             player.transform.position = player.Position + dashVector * dashDistance;
